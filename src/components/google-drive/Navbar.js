@@ -9,7 +9,7 @@ export default function NavbarComponent() {
       Google Drive            
     </Navbar.Brand>
     <Nav expand="sm">
-      <Nav.Link as={Link} to="/user">
+      <Nav.Link as={Link} to="/profile">
         Profile
       </Nav.Link>
     </Nav>

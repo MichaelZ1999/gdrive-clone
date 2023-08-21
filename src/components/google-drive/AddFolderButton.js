@@ -22,11 +22,13 @@ function closeModal() {
 function handleSubmit(e) {
     e.preventDefault(e) 
 
-        database.folders.add({
+    if (currentFolder == null) return
+    
+    database.folders.add({
             name: name,
             parentId: currentFolder.id,
             userId: currentUser.uid,
-            // path: path,
+            // // path: path,
             createdAt: database.getCurrentTimestamp(),
           })
     

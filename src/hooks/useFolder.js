@@ -1,11 +1,13 @@
 import { useReducer, useEffect } from "react"
 import { database } from "../firebase"
-
+import { useAuth } from "../contexts/AuthContext"
+//N//
 const ACTIONS = {
     SELECT_FOLDER: "select-folder",
     UPDATE_FOLDER: "update-folder",
+    SET_CHILD_FOLDERS: "set-child-folders"
   }
-
+//N//
 const ROOT_FOLDER = { name: "Root", id: null, path: [] }  
 
 function reducer(state, { type, payload }) {
@@ -22,6 +24,11 @@ function reducer(state, { type, payload }) {
           ...state,
           folder: payload.folder
         }
+      case ACTIONS.SET_CHILD_FOLDERS:
+        return {
+          ...state,
+          childFolders: payload.childFolders
+        }
       default:
         return state
     }
@@ -32,15 +39,16 @@ export function useFolder(folderId = null, folder = null) {
         folderId,
         folder,
         childFolders: [],
-        childFiles: [],
+        childFiles: []
       })
+  const { currentUser } = useAuth()
 
-    useEffect(() => {
+  useEffect(() => {
         dispatch({ type: ACTIONS.SELECT_FOLDER, payload: { folderId, 
         folder } })
       }, [folderId, folder])
 
-    useEffect(() => {
+  useEffect(() => {
         if (folderId == null) {
           return dispatch({
             type: ACTIONS.UPDATE_FOLDER,
@@ -48,23 +56,36 @@ export function useFolder(folderId = null, folder = null) {
           })
         }
     
-        // database.folders
-        //   .doc(folderId)
-        //   .get()
-        //   .then(doc => {
-        //     console.log(doc.data())
-        // //     dispatch({
-        // //       type: ACTIONS.UPDATE_FOLDER,
-        // //       payload: { folder: database.formatDoc(doc) },
-        // //     })
-        //   })
-        //   .catch(() => {
-        //     dispatch({
-        //       type: ACTIONS.UPDATE_FOLDER,
-        //       payload: { folder: ROOT_FOLDER },
-        //     })
-        //   })
+      database.folders
+        .doc(folderId)
+        .get()
+        .then(doc => {
+            dispatch({
+              type: ACTIONS.UPDATE_FOLDER,
+              payload: { folder: database.formatDoc(doc) },
+            })
+          })
+          .catch(() => {
+            dispatch({
+              type: ACTIONS.UPDATE_FOLDER,
+              payload: { folder: ROOT_FOLDER },
+            })
+          })
       }, [folderId])
+    
+  useEffect(() => {
+      return database.folders
+          .where("parentId", "==", folderId)
+          .where("userId", "==", currentUser.uid)
+          .orderBy("createdAt")
+          .onSnapshot(snapshot => {
+            dispatch({
+              type: ACTIONS.SET_CHILD_FOLDERS,
+              payload: { childFolders: snapshot.docs.map(database.formatDoc) },
+            })
+          })
+      }, [folderId, currentUser])    
+    
 
     return state
 }
