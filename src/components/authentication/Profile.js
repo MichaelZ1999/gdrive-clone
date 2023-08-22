@@ -32,7 +32,7 @@ export default function Profile() {
             Update Profile
           </Link>
         </Card.Body>
-      </Card>
+      </Card> 
       <div className="w-100 text-center mt-2">
         <Button variant="link" onClick={handleLogout}>
           Log Out
