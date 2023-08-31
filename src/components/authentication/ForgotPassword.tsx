@@ -1,26 +1,35 @@
-import React, { useState } from 'react'
-import { useRef } from 'react'
+import React, { useState, useRef, FormEvent } from 'react'
 import { Form, Button, Card, FormLabel, FormControl, Alert} from 'react-bootstrap'
 import { useAuth } from '../../contexts/AuthContext'
 import { Link } from 'react-router-dom'
 import CenteredContainer from './CenteredContainer'
+import firebase from 'firebase/compat'
 
-export default function ForgotPassword() {
-    const emailRef = useRef()
+
+
+export default function ForgotPassword(): JSX.Element {
+    const emailRef = useRef<HTMLInputElement>(null);
     const { resetPassword } = useAuth()
     const [error, setError] = useState('')
     const [message, setMessage] = useState("")
     const [loading, setLoading] = useState(false)
 
-    async function handleSubmit(e) {
+    async function handleSubmit(e: FormEvent<HTMLFormElement>) {
       e.preventDefault()
 
 
        try {
         setError('')
         setLoading(true)
-        await  resetPassword(emailRef.current.value)
-        setMessage ('check your inbox for further instructions')
+        const email = emailRef.current?.value;
+        if (email !== undefined) {
+          await  resetPassword(email)
+          setMessage ('check your inbox for further instructions')
+        } else {
+          setError('Email is required');
+        }
+          
+
       } catch {
         setError('Failed to Reset Password')
       } 
@@ -54,3 +63,4 @@ export default function ForgotPassword() {
     </CenteredContainer>
   )
 }
+

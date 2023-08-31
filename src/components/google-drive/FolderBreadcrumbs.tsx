@@ -1,11 +1,24 @@
 import React from 'react'
 import { Breadcrumb } from 'react-bootstrap'
-import { ROOT_FOLDER } from '../../hooks/useFolder'
+import { ROOT_FOLDER } from '../../hooks/useCustom'
 import { Link } from 'react-router-dom'
 
-export default function FolderBreadcrumbs({ currentFolder}) {
-    let path = currentFolder === ROOT_FOLDER ? [] : [ROOT_FOLDER]
-    if (currentFolder) path = [...path, ...currentFolder.path]
+interface FolderBreadcrumbsProps {
+  currentFolder: Folder;
+}
+
+interface Folder {
+  name: string;
+  id: string | null;
+  path?: Folder[];
+}
+
+
+
+export default function FolderBreadcrumbs({ currentFolder}:
+  FolderBreadcrumbsProps): JSX.Element {
+    let path: Folder[] = currentFolder === ROOT_FOLDER ? [] : [ROOT_FOLDER];
+    if (currentFolder && currentFolder.path) path = [...path, ...currentFolder.path];
     return (
         <Breadcrumb
           className="flex-grow-1"

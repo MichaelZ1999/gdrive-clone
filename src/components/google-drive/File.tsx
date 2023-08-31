@@ -2,7 +2,15 @@ import { faFile } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 
-export default function File({ file }) {
+interface FileProps {
+  file: {
+    url: string;
+    name: string;
+  };
+}
+
+
+export default function File({ file }: FileProps) {
   return (
     <a 
     href={file.url} 

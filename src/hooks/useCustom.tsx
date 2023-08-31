@@ -1,6 +1,8 @@
 import { useReducer, useEffect } from "react"
-import { database } from "../firebase"
+import { database ,firestore} from "../firebase"
 import { useAuth } from "../contexts/AuthContext"
+import { collection, onSnapshot,query, where,orderBy } from "firebase/firestore";
+
 //N//
 const ACTIONS = {
     SELECT_FOLDER: "select-folder",
@@ -11,7 +13,7 @@ const ACTIONS = {
 //N//
 export const ROOT_FOLDER = { name: "Root", id: null, path: [] }  
 
-function reducer(state, { type, payload }) {
+function reducer(state: any, { type, payload }:{ type: string, payload: any}) {
     switch (type) {
       case ACTIONS.SELECT_FOLDER:
         return {
@@ -41,7 +43,7 @@ function reducer(state, { type, payload }) {
   }
 
 export function useFolder(folderId = null, folder = null) {
-    const [state, dispatch] = useReducer(reducer, {
+  const [state, dispatch] = useReducer(reducer, {
         folderId,
         folder,
         childFolders: [],
@@ -61,48 +63,41 @@ export function useFolder(folderId = null, folder = null) {
             payload: { folder: ROOT_FOLDER },
           })
         }
-    
-      database.folders
-        .doc(folderId)
-        .get()
-        .then(doc => {
-            dispatch({
-              type: ACTIONS.UPDATE_FOLDER,
-              payload: { folder: database.formatDoc(doc) },
-            })
+        const unsub = onSnapshot(collection(firestore, folderId), (doc) => {
+          dispatch({
+            type: ACTIONS.UPDATE_FOLDER,
+            payload: { folder: database.formatDoc(doc) },
           })
-        .catch(() => {
-            dispatch({
-              type: ACTIONS.UPDATE_FOLDER,
-              payload: { folder: ROOT_FOLDER },
-            })
-          })
+      }, (() => {
+        dispatch({
+          type: ACTIONS.UPDATE_FOLDER,
+          payload: { folder: ROOT_FOLDER },
+        })
+      }));
       }, [folderId])
     
   useEffect(() => {
-      return database.folders
-          .where("parentId", "==", folderId)
-          .where("userId", "==", currentUser.uid)
-          .orderBy("createdAt")
-          .onSnapshot(snapshot => {
-            dispatch({
-              type: ACTIONS.SET_CHILD_FOLDERS,
-              payload: { childFolders: snapshot.docs.map(database.formatDoc) },
-            })
-          })
+    if(!currentUser)
+    return
+    const q = query(database.addFolders,where("parentId", "==", folderId),where("userId", "==", currentUser.uid),orderBy("createdAt"));
+    return onSnapshot(q, (querySnapshot) => {
+      dispatch({
+        type: ACTIONS.SET_CHILD_FOLDERS,
+        payload: { childFolders: querySnapshot.docs.map(database.formatDoc) },
+      })
+    });
       }, [folderId, currentUser])    
     
   useEffect(() => {
-      return database.files
-          .where("folderId", "==", folderId)
-          .where("userId", "==", currentUser.uid)  
-          .orderBy("createdAt")  
-          .onSnapshot(snapshot => {    
-            dispatch({
-              type: ACTIONS.SET_CHILD_FILES,
-              payload: { childFiles: snapshot.docs.map(database.formatDoc) },
-            })
-          })
+    if(!currentUser)
+    return
+    const q = query(database.addFiles,where("folderId", "==", folderId),where("userId", "==", currentUser.uid),orderBy("createdAt"));
+    return onSnapshot(q, (querySnapshot) => {
+      dispatch({
+        type: ACTIONS.SET_CHILD_FILES,
+        payload: { childFiles: querySnapshot.docs.map(database.formatDoc) },
+      })
+    });
       }, [folderId, currentUser])  
     
 

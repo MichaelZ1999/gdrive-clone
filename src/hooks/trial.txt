@@ -1,0 +1,222 @@
+import { useReducer, useEffect, useState } from "react"
+import { database } from "../firebase"
+import { useAuth } from "../contexts/AuthContext"
+import Folder from '../components/google-drive/Folder';
+import "firebase/compat/firestore"
+import { ActionType, } from "../../types";
+
+
+import firebase from "firebase/compat/app"
+
+
+//N//
+interface User {
+  id: string;
+  firstName: string;
+  lastName: string;
+  age: number;
+  gender: string;
+  phoneNumber: string;
+  profilePicture: string;
+}
+
+
+
+const ACTIONS = {
+    SELECT_FOLDER: "select-folder",
+    UPDATE_FOLDER: "update-folder",
+    SET_CHILD_FOLDERS: "set-child-folders",
+    SET_CHILD_FILES: "set-child-files",
+    SET_USERS: "set-users",
+    ADD_TO_FAVORITES: "add-to-favorites",
+    MOVE_TO_TRASH: "move-to-trash",
+  }
+//N//
+export const ROOT_FOLDER = { name: "Root", id: null, path: [] }  
+
+function reducer(state: State, { type, payload }: Action): State {
+    switch (type) {
+      case ACTIONS.SELECT_FOLDER:
+        return {
+          folderId: payload.folderId,
+          folder: payload.folder,
+          childFiles: [],
+          childFolders: []
+        }
+      case ACTIONS.UPDATE_FOLDER:
+        return {
+          ...state,
+          folder: payload.folder
+        }
+      case ACTIONS.SET_CHILD_FOLDERS:
+        return {
+          ...state,
+          childFolders: payload.childFolders
+        }
+      case ACTIONS.SET_CHILD_FILES:
+        return {
+          ...state,
+          childFiles: payload.childFiles
+          }
+      case ACTIONS.SET_USERS:
+        return {
+          ...state,
+          users: payload.users,
+        }
+      case ACTIONS.ADD_TO_FAVORITES:
+        return {
+          ...state,
+          favourites: [...state.favourites, payload.file],
+        }
+      case ACTIONS.MOVE_TO_TRASH:
+        return {
+          ...state,
+          trash: [...state.trash, payload.file],
+        }
+      default:
+        return state
+    }
+  }
+
+export function useCustom(folderId = null, folder = null) {
+    const [state, dispatch] = useReducer(reducer, {
+        folderId,
+        folder,
+        childFolders: [],
+        childFiles: [],
+        users: []
+      })
+
+    const { currentUser } = useAuth()
+
+    useEffect(() => {
+        dispatch({ type: ACTIONS.SELECT_FOLDER, payload: { folderId, 
+        folder } })
+      }, [folderId, folder])
+
+    useEffect(() => {
+        if (folderId == null) {
+          return dispatch({
+            type: ACTIONS.UPDATE_FOLDER,
+            payload: { folder: ROOT_FOLDER },
+          })
+        }
+    
+      database.folders
+        .doc(folderId)
+        .get()
+        .then(doc => {
+            dispatch({
+              type: ACTIONS.UPDATE_FOLDER,
+              payload: { folder: database.formatDoc(doc) },
+            })
+          })
+        .catch(() => {
+            dispatch({
+              type: ACTIONS.UPDATE_FOLDER,
+              payload: { folder: ROOT_FOLDER },
+            })
+          })
+      }, [folderId])
+    
+    useEffect(() => {
+      return database.folders
+          .where("parentId", "==", folderId)
+          .where("userId", "==", currentUser.uid)
+          .orderBy("createdAt")
+          .onSnapshot(snapshot => {
+            dispatch({
+              type: ACTIONS.SET_CHILD_FOLDERS,
+              payload: { childFolders: snapshot.docs.map(database.formatDoc) },
+            })
+          })
+      }, [folderId, currentUser])    
+    
+    useEffect(() => {
+      return database.files
+          .where("folderId", "==", folderId)
+          .where("userId", "==", currentUser.uid)  
+          .orderBy("createdAt")  
+          .onSnapshot(snapshot => {    
+            dispatch({
+              type: ACTIONS.SET_CHILD_FILES,
+              payload: { childFiles: snapshot.docs.map(database.formatDoc) },
+            })
+          })
+      }, [folderId, currentUser])  
+
+
+    return state
+}// useEffect(() => {
+    //   return database.users.orderBy("createdAt").onSnapshot(snapshot => { dispatch({
+    //     type: ACTIONS.SET_USERS,
+    //     payload: { 
+    //       users: snapshot.docs.map(database.formatDoc) },
+    //     })
+    //   })
+    // }, [])
+    
+
+// export function useUsers() {
+//   const [users, setUsers] = useState([]);
+
+//   useEffect(() => {
+//     const unsubscribe = database.users.onSnapshot((snapshot) => {
+//       const userList = snapshot.docs.map(database.formatDoc);
+//       setUsers(userList as any);
+//     });
+//     return unsubscribe;
+//   }, []);
+
+//   return users;
+// }
+
+export function useUserCollection() {
+  const [users, setUsers] = useState<User[]>([]);
+  
+
+  useEffect(() => {
+    // Retrieve users from Firestore
+    const fetchUsers = async () => {
+      try {
+        const querySnapshot = await database.collection('users').get();
+        const usersData = querySnapshot.docs.map((doc) => doc.data() as User);
+        setUsers(usersData);
+      } catch (error) {
+        console.error('Failed to fetch users:', error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  const createUser = async (
+    firstName: string,
+    lastName: string,
+    age: number,
+    gender: string,
+    phoneNumber: string,
+    profilePicture: string
+  ) => {
+    // Create a new user object
+    const newUser: User = {
+      id: Math.random().toString(), // Generate a unique ID (replace with your own logic)
+      firstName,
+      lastName,
+      age,
+      gender,
+      phoneNumber,
+      profilePicture,
+    };
+
+    setUsers([...users, newUser]);
+
+    try {
+      await 
+      db.collection('users').doc(newUser.id).set(newUser);
+    } catch (error) {
+      console.error('failed to create user:', error);
+    }
+  };
+  return { users, createUser };
+}

@@ -4,18 +4,19 @@ import { Container } from 'react-bootstrap'
 import AddFolderButton from './AddFolderButton'
 import AddFileButton from './AddFileButton'
 import { useParams, useLocation } from 'react-router'
-import { useFolder } from '../../hooks/useFolder'
+import { useFolder } from '../../hooks/useCustom'
 import Folder from './Folder'
 import File from './File'
 
 import FolderBreadcrumbs from './FolderBreadcrumbs'
 
+interface DashboardProps {}
 
 export default function Dashboard() {
 
-  const { folderId } = useParams()
+  const { folderId } = useParams<{ folderId: string }>();
   const { state = {} } = useLocation()
-  const { folder, childFolders, childFiles } = useFolder(folderId)
+  const { folder, childFolders, childFiles } = useFolder(folderId as any)
   
     
   return (
@@ -32,7 +33,7 @@ export default function Dashboard() {
           {childFolders.length > 0 && (
             <div className='d-flex flex-wrap'>
               {
-                childFolders.map(childFolder => (
+                childFolders.map((childFolder: any)  => (
                   <div
                     key={childFolder.id}
                     style={{maxWidth: "150px"}}
@@ -50,7 +51,7 @@ export default function Dashboard() {
           {childFiles.length > 0 && (
             <div className='d-flex flex-wrap'>
               {
-                childFiles.map(childFile => (
+                childFiles.map((childFile: any) => (
                   <div
                     key={childFile.id}
                     style={{maxWidth: "150px"}}

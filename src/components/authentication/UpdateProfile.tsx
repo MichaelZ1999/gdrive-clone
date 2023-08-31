@@ -6,26 +6,26 @@ import { Link, useNavigate } from 'react-router-dom'
 import CenteredContainer from './CenteredContainer'
 
 export default function UpdateProfile() {
-    const emailRef = useRef()
-    const passwordRef = useRef()
-    const passwordConfirmRef = useRef()
-    const { currentUser, updatePassword, updateEmail } = useAuth()
-    const [error, setError] = useState('')
-    const [loading, setLoading] = useState(false)
+    const emailRef = useRef<HTMLInputElement>()
+    const passwordRef = useRef<HTMLInputElement>()
+    const passwordConfirmRef = useRef<HTMLInputElement>()
+    const { currentUser, onUpdateEmail, onUpdatePassword } = useAuth()
+    const [error, setError] = useState<string>('')
+    const [loading, setLoading] = useState<boolean>(false)
     const navigate = useNavigate()
 
-    function handleSubmit(e) {
+    function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
       e.preventDefault()
 
-      const promises = []
+      const promises: Promise<void>[] = [];
       setLoading(true)
       setError('')
 
-      if ( emailRef.current.value !== currentUser.email) {
-        promises.push(updateEmail(emailRef.current.value))
+      if ( emailRef.current && emailRef.current.value !== currentUser?.email ) {
+        promises.push(onUpdateEmail(emailRef.current.value))
       }
-      if ( passwordRef.current.value !== currentUser ) {
-        promises.push(updatePassword(passwordRef.current.value))
+      if ( passwordRef.current ) {
+        promises.push(onUpdatePassword(passwordRef.current.value))
       }
 
       Promise.all(promises).then(() => {
@@ -38,8 +38,6 @@ export default function UpdateProfile() {
 
     }
 
-    
-    
     return (
     <CenteredContainer>
       <Card>
@@ -49,18 +47,18 @@ export default function UpdateProfile() {
             <Form onSubmit={handleSubmit}>
                 <Form.Group id="email">
                     <FormLabel>Email</FormLabel>
-                    <FormControl type="email" ref={emailRef} required
-                    defaultValue={currentUser.email}/>
+                    <FormControl type="email" ref={emailRef as React.RefObject<HTMLInputElement>} required
+                    defaultValue={currentUser?.email??''}/>
                 </Form.Group>
                 <Form.Group id="password">
                     <FormLabel>Password</FormLabel>
-                    <FormControl type="password" ref={passwordRef}
+                    <FormControl type="password" ref={passwordRef as React.RefObject<HTMLInputElement>}
                     
                     placeholder='Leave blank to keep the same'/>
                 </Form.Group>
                 <Form.Group id="password-confirm">
                     <FormLabel>Password Confirmation</FormLabel>
-                    <FormControl type="password" ref={passwordConfirmRef} 
+                    <FormControl type="password" ref={passwordConfirmRef as React.RefObject<HTMLInputElement>} 
                    
                     placeholder='Leave blank to keep the same'
                     />
