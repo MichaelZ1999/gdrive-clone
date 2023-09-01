@@ -99,6 +99,26 @@ export function AuthProvider({ children }: { children: React.ReactNode}) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // import React from 'react'
 // import { useState, useContext, useEffect, createContext } from 'react'
 // import { auth } from '../firebase';

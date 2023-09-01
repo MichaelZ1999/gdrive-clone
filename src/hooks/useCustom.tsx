@@ -11,7 +11,7 @@ const ACTIONS = {
     SET_CHILD_FILES: "set-child-files",
   }
 //N//
-export const ROOT_FOLDER = { name: "Root", id: null, path: [] }  
+export const ROOT_FOLDER = { name: "Root", id: 'root', path: [] }  
 
 function reducer(state: any, { type, payload }:{ type: string, payload: any}) {
     switch (type) {
@@ -49,31 +49,25 @@ export function useFolder(folderId = null, folder = null) {
         childFolders: [],
         childFiles: []
       })
+      console.log('past reducer')
   const { currentUser } = useAuth()
+  console.log('past auth')
 
   useEffect(() => {
+    console.log(folderId,folder);
         dispatch({ type: ACTIONS.SELECT_FOLDER, payload: { folderId, 
         folder } })
       }, [folderId, folder])
 
   useEffect(() => {
+    console.log(folderId,folder,'folderCheck');
+
         if (folderId == null) {
           return dispatch({
             type: ACTIONS.UPDATE_FOLDER,
             payload: { folder: ROOT_FOLDER },
           })
-        }
-        const unsub = onSnapshot(collection(firestore, folderId), (doc) => {
-          dispatch({
-            type: ACTIONS.UPDATE_FOLDER,
-            payload: { folder: database.formatDoc(doc) },
-          })
-      }, (() => {
-        dispatch({
-          type: ACTIONS.UPDATE_FOLDER,
-          payload: { folder: ROOT_FOLDER },
-        })
-      }));
+    }
       }, [folderId])
     
   useEffect(() => {

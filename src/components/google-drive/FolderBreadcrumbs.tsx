@@ -29,10 +29,7 @@ export default function FolderBreadcrumbs({ currentFolder}:
               key={folder.id}
               linkAs={Link}
               linkProps={{
-                to: {
-                  pathname: folder.id ? `/folder/${folder.id}` : "/dashboard",
-                  state: { folder: { ...folder, path: path.slice(1, index) } },
-                },
+                to: folder.id ? `/folder/${folder.id}` : "/",
               }}
               className="text-truncate d-inline-block"
               style={{ maxWidth: "150px" }}

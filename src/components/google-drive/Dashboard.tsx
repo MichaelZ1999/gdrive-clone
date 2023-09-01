@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Navbar from './Navbar'
 import { Container } from 'react-bootstrap'
 import AddFolderButton from './AddFolderButton'
@@ -15,9 +15,9 @@ interface DashboardProps {}
 export default function Dashboard() {
 
   const { folderId } = useParams<{ folderId: string }>();
-  const { state = {} } = useLocation()
-  const { folder, childFolders, childFiles } = useFolder(folderId as any)
-  
+  const [ curentFolder, setCurrentFolder ]= useState()
+  const { folder, childFolders, childFiles } = useFolder(folderId, curentFolder)
+  console.log(folder,'folrder>>>')
     
   return (
     <>
@@ -28,7 +28,7 @@ export default function Dashboard() {
             <AddFileButton currentFolder={folder} />
             <AddFolderButton currentFolder={folder} />
           </div> 
-            
+             
           {/* {folder && <Folder folder={folder}></Folder>} */}
           {childFolders.length > 0 && (
             <div className='d-flex flex-wrap'>
@@ -39,7 +39,7 @@ export default function Dashboard() {
                     style={{maxWidth: "150px"}}
                     className='p-2'
                   >
-                    <Folder folder={childFolder}/>
+                    <Folder folder={childFolder} onPress={(fold)=>setCurrentFolder(fold)}/>
 
                   </div>
 

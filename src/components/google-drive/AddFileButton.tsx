@@ -7,7 +7,7 @@ import { storage, database } from "../../firebase"
 import { ROOT_FOLDER } from "../../hooks/useCustom"
 import { ProgressBar, Toast } from "react-bootstrap"
 import { v4 as uuidv4} from 'uuid'
-import {  onSnapshot, query, where,addDoc,updateDoc} from "firebase/firestore"
+import {  getDocs, query, where,addDoc,updateDoc} from "firebase/firestore"
 import { ref,getDownloadURL,uploadBytesResumable } from "firebase/storage";
 interface UploadFile{
     id: string;
@@ -36,11 +36,13 @@ export default function AddFileButton({ currentFolder }: AddFileButtonProps): JS
             ...prevUploadingFiles,
             { id: id, name: file.name, progress: 0, error: false },
         ])
-
+        console.log(currentFolder)
         const filePath =
             currentFolder === ROOT_FOLDER
                 ? `${currentFolder.path.join("/")}/${file.name}`
                 : `${currentFolder.path.join("/")}/${currentFolder.name}/${file.name}`
+
+                console.log(filePath)
 
         const storageRef = ref(storage,`/files/${currentUser.uid}/${filePath}`)
           const uploadTask = uploadBytesResumable(storageRef, file);
@@ -72,10 +74,11 @@ export default function AddFileButton({ currentFolder }: AddFileButtonProps): JS
                     return uploadFile.id !== id
                 })
             })
-            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
                 const q = query(database.addFiles,  where("name", '==', file.name),where("userId", "==", currentUser.uid),where("folderId", "==", currentFolder.id));
-                const unsubscribe = onSnapshot(q, (querySnapshot) => {
+                const  querySnapshot=await  getDocs(q)
                     const existingFile = querySnapshot.docs[0]
+                    console.log(existingFile)
                     if (existingFile) {
                         existingFile.data().ref.update({url: downloadURL})
                     } else {
@@ -88,7 +91,7 @@ export default function AddFileButton({ currentFolder }: AddFileButtonProps): JS
                           })
                     }
                   });
-              });        
+                     
         })
     }
   

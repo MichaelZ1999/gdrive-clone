@@ -4,13 +4,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFolderPlus } from '@fortawesome/free-solid-svg-icons'
 import { database } from '../../firebase'
 import { useAuth } from '../../contexts/AuthContext'
-import { Folder } from '../../models/Folder';
+import { IFolder } from '../../models/Folder';
 import {  addDoc } from "firebase/firestore"; 
 interface AddFolderButtonProps {
-    currentFolder: Folder | null;
+    currentFolder: IFolder | null;
   }
   
-  const ROOT_FOLDER: Folder = {
+  const ROOT_FOLDER: IFolder = {
     name: 'Root',
     id: null,
     path: [],

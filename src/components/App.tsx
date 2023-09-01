@@ -1,4 +1,5 @@
 import { Container } from "react-bootstrap";
+import '../../src/index'
 import Signup from "./authentication/Signup";
 import { AuthProvider} from "../contexts/AuthContext";
 import React from "react";
@@ -19,10 +20,10 @@ function App() {
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/" element={<Login />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
-                <Route path="/user" element={<ProtectedRoute component={Profile} />} />
-                <Route path="/update-profile" element={<ProtectedRoute component={UpdateProfile} />} />
-                <Route path="/dashboard" element={<ProtectedRoute component={Dashboard} />} />
-                <Route path="/folder/:folderId"element={<ProtectedRoute component={Dashboard} />} />                 
+                <Route path="/user/*" element={<ProtectedRoute component={Profile} />} />
+                <Route path="/update-profile/*" element={<ProtectedRoute component={UpdateProfile} />} />
+                <Route path="/dashboard/*" element={<ProtectedRoute component={Dashboard} />} />
+                <Route path="/folder/:folderId/*"element={<ProtectedRoute component={Dashboard} />} />                 
             </Routes>
         </AuthProvider>
   )
