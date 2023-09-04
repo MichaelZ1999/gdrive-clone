@@ -1,6 +1,7 @@
 {
   "name": "firebase-react-auth",
   "version": "0.1.0",
+  "homepage": "/home-page",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -14,6 +15,7 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "antd": "^5.8.6",
     "autoprefixer": "^10.4.15",
     "bootstrap": "^5.3.1",
     "firebase": "^10.3.0",
@@ -26,6 +28,7 @@
     "react-router-dom": "^6.15.0",
     "react-scripts": "5.0.1",
     "tailwind": "^4.0.0",
+    "tw-elements-react": "^1.0.0-alpha1",
     "uuid": "^9.0.0",
     "uuidv4": "^6.2.13",
     "web-vitals": "^2.1.4"

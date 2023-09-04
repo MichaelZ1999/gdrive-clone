@@ -30,7 +30,7 @@ export default function Login() {
       <main className="w-full h-screen flex flex-col items-center justify-center px-4">
       <div className="max-w-sm w-full text-gray-600">
           <div className="text-center">
-              <img src="https://cdn.dribbble.com/userupload/6894190/file/original-96afecc1619321404c356017c09b17ee.jpg?resize=752x" width={150} className="mx-auto rounded-3xl" />
+          <a className="flex items-center text-4xl font-bold text-indigo-400 no-underline hover:no-underline lg:text-4xl justify-center" href="/home-page"> d<span className="bg-gradient-to-r from-green-400 via-pink-500 to-purple-500 bg-clip-text text-transparent">ddrive</span> </a>
               <div className="mt-5 space-y-2">
                   <h3 className="text-gray-800 text-2xl font-bold sm:text-3xl">Log in to your account</h3>
                   <p className="">Don't have an account? <a href="/signup" className="font-medium text-indigo-600 hover:text-indigo-500">Sign up</a></p>

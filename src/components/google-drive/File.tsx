@@ -1,5 +1,6 @@
 import { faFile } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import FileIcon from '../fileicon.png'
 import React from 'react'
 
 interface FileProps {
@@ -15,9 +16,9 @@ export default function File({ file }: FileProps) {
     <a 
     href={file.url} 
     target='_blank' 
-    className=' btn btn-outline-dark text-truncate w-100'
+    className='text-truncate w-100 flex-1 flex-row'
     >
-        <FontAwesomeIcon icon={faFile} className='mr-2'/>
+        <img src={FileIcon} className="mr-2 h-10 w-10"/>
         {file.name}
     </a>
   )

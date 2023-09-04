@@ -22,7 +22,7 @@ export default function FolderBreadcrumbs({ currentFolder}:
     return (
         <Breadcrumb
           className="flex-grow-1"
-          listProps={{ className: "bg-white pl-0 m-0" }}
+          listProps={{ className: "bg-white px-8 m-4 space-x-4 flex justify" }}
         >
           {path.map((folder, index) => (
             <Breadcrumb.Item
@@ -31,15 +31,15 @@ export default function FolderBreadcrumbs({ currentFolder}:
               linkProps={{
                 to: folder.id ? `/folder/${folder.id}` : "/",
               }}
-              className="text-truncate d-inline-block"
+              className="text-truncate d-inline-block font-serif"
               style={{ maxWidth: "150px" }}
-            >
+            > {">> "}
               {folder.name}
             </Breadcrumb.Item>
           ))}
           {currentFolder && (
             <Breadcrumb.Item
-              className="text-truncate d-inline-block"
+              className="text-truncate d-inline-block  "
               style={{ maxWidth: "200px" }}
               active
             >

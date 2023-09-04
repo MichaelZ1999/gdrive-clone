@@ -25,7 +25,7 @@ export default function Signup() {
         setError('')
         setLoading(true)
         await  signup(emailRef.current!.value, passwordRef.current!.value)
-        navigate('/')
+        navigate('/login')
       } catch {
         setError('Failed to create an account')
       } 
@@ -35,10 +35,11 @@ export default function Signup() {
       <main className="w-full h-screen flex flex-col items-center justify-center px-4">
       <div className="max-w-sm w-full text-gray-600">
           <div className="text-center">
-              <img src="https://cdn.dribbble.com/userupload/6894190/file/original-96afecc1619321404c356017c09b17ee.jpg?resize=752x" width={150} className="mx-auto rounded-3xl" />
+          
               <div className="mt-5 space-y-2">
+              <a className="flex items-center text-4xl font-bold text-indigo-400 no-underline hover:no-underline lg:text-4xl justify-center" href="/home-page"> d<span className="bg-gradient-to-r from-green-400 via-pink-500 to-purple-500 bg-clip-text text-transparent">ddrive</span> </a>
                   <h3 className="text-gray-800 text-2xl font-bold sm:text-3xl">Create an account</h3>
-                  <p className="">Already have an account? <a href="/" className="font-medium text-indigo-600 hover:text-indigo-500">Sign in</a></p>
+                  <p className="">Already have an account? <a href="/login" className="font-medium text-indigo-600 hover:text-indigo-500">Sign in</a></p>
               </div>
           </div>
           {error && <Alert variant='danger'> {error}  </Alert>}

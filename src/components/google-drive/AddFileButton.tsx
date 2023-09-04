@@ -9,6 +9,8 @@ import { ProgressBar, Toast } from "react-bootstrap"
 import { v4 as uuidv4} from 'uuid'
 import {  getDocs, query, where,addDoc,updateDoc} from "firebase/firestore"
 import { ref,getDownloadURL,uploadBytesResumable } from "firebase/storage";
+import addfileicon from '../addfileicon.png'
+
 interface UploadFile{
     id: string;
     name: string;
@@ -98,7 +100,7 @@ export default function AddFileButton({ currentFolder }: AddFileButtonProps): JS
     return (
         <>
             <label className="btn btn-outline-success btn-sm m-0 mr-2">
-                <FontAwesomeIcon icon={faFileUpload} />
+            <img src={addfileicon} className="mr-2 h-10 w-10 "/>
                 <input
                     type="file"
                     onChange={handleUpload}
@@ -150,6 +152,22 @@ export default function AddFileButton({ currentFolder }: AddFileButtonProps): JS
         </>
   )
 }
+    <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700">
+    <div className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style="width: 45%"> 45%</div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // import React, { useState } from "react"
 // import ReactDOM from "react-dom"

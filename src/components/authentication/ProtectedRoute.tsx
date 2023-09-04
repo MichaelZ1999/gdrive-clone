@@ -28,7 +28,7 @@ const ProtectedRoute: FC<ProtectedRouteProps> = ({ component: Component, ...rest
   const { currentUser } = useAuth();
 
   if (!currentUser) {
-    return <Navigate to='/' />;
+    return <Navigate to='/login' />;
   }
   return <Routes>
     <Route {...rest} path='/*' element={<Dashboard />} />
