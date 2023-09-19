@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom'
 import { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import logoFile from '../../logo.png'
+import { Button } from 'react-bootstrap';
 
 export default function NavbarComponent(): JSX.Element {
   const [ error, setError ] = useState('')
@@ -24,7 +26,10 @@ export default function NavbarComponent(): JSX.Element {
    
  <nav className="border-gray-200 bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
  <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
- <a className="flex items-center text-3xl font-bold text-indigo-400 no-underline hover:no-underline lg:text-4xl" href="/home-page"> d<span className="bg-gradient-to-r from-green-400 via-pink-500 to-purple-500 bg-clip-text text-transparent">ddrive</span> </a>
+ <Button  size="sm">
+        <img src={logoFile} className="mr-2 h-10 w-10"/>
+  </Button>
+ <img src='' className="flex items-center text-3xl font-bold text-indigo-400 no-underline hover:no-underline lg:text-4xl" />
    <button data-collapse-toggle="navbar-solid-bg" type="button" className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-solid-bg" aria-expanded="false">
        <span className="sr-only">Open main menu</span>
        <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">

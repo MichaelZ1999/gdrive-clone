@@ -3,7 +3,6 @@ import { useRef } from 'react'
 import { Form, Button, Card, FormLabel, FormControl, Alert} from 'react-bootstrap'
 import { useAuth } from '../../contexts/AuthContext'
 import { Link, useNavigate } from 'react-router-dom'
-import CenteredContainer from './CenteredContainer'
 
 export default function UpdateProfile() {
     const emailRef = useRef<HTMLInputElement>()
@@ -39,7 +38,7 @@ export default function UpdateProfile() {
     }
 
     return (
-    <CenteredContainer>
+     <>
       <Card>
         <Card.Body>
             <h2 className='text-center mb-4'> Update Profile </h2>
@@ -72,6 +71,6 @@ export default function UpdateProfile() {
       <div className='w-100 text-center mt-2'>
        <Link to= "/user">Cancel</Link>
       </div>
-    </CenteredContainer>
+    </>
   )
 }

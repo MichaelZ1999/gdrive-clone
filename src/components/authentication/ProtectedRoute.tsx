@@ -18,7 +18,8 @@
 import React, { FC } from 'react';
 import { Navigate, Route, RouteProps ,Routes} from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import Dashboard from '../google-drive/Dashboard';
+import Dashboard from '../google-drive/Dashboard'
+import Profile from '../authentication/Profile'
 
 type ProtectedRouteProps = {
   component: React.FC;
@@ -32,6 +33,9 @@ const ProtectedRoute: FC<ProtectedRouteProps> = ({ component: Component, ...rest
   }
   return <Routes>
     <Route {...rest} path='/*' element={<Dashboard />} />
+    <Route {...rest} path='/profile' element={<Profile />} />
+   
+
   </Routes>;
 };
 

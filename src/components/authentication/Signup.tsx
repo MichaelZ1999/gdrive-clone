@@ -1,11 +1,19 @@
 import React, { useState } from 'react'
 import { useRef } from 'react'
 import { Form, Button, Card, FormLabel, FormControl, Alert} from 'react-bootstrap'
-import { useAuth } from '../../contexts/AuthContext'
-import { Link, useNavigate } from 'react-router-dom'
-import CenteredContainer from './CenteredContainer'
 
-export default function Signup() {
+import { Link, useNavigate } from 'react-router-dom'
+import logoFile from '../../assets/File3.png'
+import { useAuth } from '../../contexts/AuthContext'
+
+import { DocumentData, DocumentReference, doc, setDoc } from "firebase/firestore";
+import { firestore } from '../../firebase';
+import { getAuth } from "firebase/auth";
+
+
+
+
+export default function SignupComponent() {
       const emailRef = useRef<HTMLInputElement>(null)
       const passwordRef = useRef<HTMLInputElement>(null)
       const passwordConfirmRef = useRef<HTMLInputElement>(null)
@@ -13,6 +21,7 @@ export default function Signup() {
       const [error, setError] = useState('')
       const [loading, setLoading] = useState(false)
       const navigate = useNavigate()
+      
 
       async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
       e.preventDefault()
@@ -25,6 +34,20 @@ export default function Signup() {
         setError('')
         setLoading(true)
         await  signup(emailRef.current!.value, passwordRef.current!.value)
+
+        const auth = getAuth();
+        const user = auth.currentUser;
+        const uid = user?.uid;
+        const userRef = doc(firestore, "Users");
+        
+        await AddDoc(userRef, {
+            firstName: "",
+            lastName: "",
+            phoneNumber: "",
+            age: null,
+            gender: "",
+            profilePicture: "",
+        });
         navigate('/login')
       } catch {
         setError('Failed to create an account')
@@ -37,7 +60,9 @@ export default function Signup() {
           <div className="text-center">
           
               <div className="mt-5 space-y-2">
-              <a className="flex items-center text-4xl font-bold text-indigo-400 no-underline hover:no-underline lg:text-4xl justify-center" href="/home-page"> d<span className="bg-gradient-to-r from-green-400 via-pink-500 to-purple-500 bg-clip-text text-transparent">ddrive</span> </a>
+                <a className="flex items-center text-4xl font-bold text-indigo-400 no-underline hover:no-underline lg:text-4xl justify-center" href="/home-page"> 
+                    <img src={logoFile} width={120} height={50} alt="Float UI logo" />
+                </a>
                   <h3 className="text-gray-800 text-2xl font-bold sm:text-3xl">Create an account</h3>
                   <p className="">Already have an account? <a href="/login" className="font-medium text-indigo-600 hover:text-indigo-500">Sign in</a></p>
               </div>
@@ -122,3 +147,7 @@ export default function Signup() {
       </Card>
       
     </CenteredContainer> */}
+function AddDoc(userRef: DocumentReference<DocumentData, DocumentData>, arg1: { firstName: string; lastName: string; phoneNumber: string; age: null; gender: string; profilePicture: string }) {
+    throw new Error('Function not implemented.')
+}
+

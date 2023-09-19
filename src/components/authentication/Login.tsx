@@ -3,8 +3,10 @@ import { useRef } from 'react'
 import { Form, Button, Card, FormLabel, FormControl, Alert} from 'react-bootstrap'
 import { useAuth } from '../../contexts/AuthContext'
 import { Link, useNavigate } from 'react-router-dom'
-import CenteredContainer from './CenteredContainer'
+
 import { ref } from 'firebase/storage';
+import logoFile from '../../assets/File3.png'
+
 
 export default function Login() {
     const emailRef = useRef<HTMLInputElement>(null)
@@ -20,7 +22,7 @@ export default function Login() {
         setError('')
         setLoading(true)
         await  login(emailRef.current!.value, passwordRef.current!.value)
-        navigate('/dashboard')
+        navigate('/home/folder/root')
       } catch {
         setError('Failed to Log in')
       } 
@@ -30,7 +32,9 @@ export default function Login() {
       <main className="w-full h-screen flex flex-col items-center justify-center px-4">
       <div className="max-w-sm w-full text-gray-600">
           <div className="text-center">
-          <a className="flex items-center text-4xl font-bold text-indigo-400 no-underline hover:no-underline lg:text-4xl justify-center" href="/home-page"> d<span className="bg-gradient-to-r from-green-400 via-pink-500 to-purple-500 bg-clip-text text-transparent">ddrive</span> </a>
+          <a className="flex items-center text-4xl font-bold text-indigo-400 no-underline hover:no-underline lg:text-4xl justify-center" href="/home-page"> 
+            <img src={logoFile} width={120} height={50} alt="Float UI logo" />
+          </a>
               <div className="mt-5 space-y-2">
                   <h3 className="text-gray-800 text-2xl font-bold sm:text-3xl">Log in to your account</h3>
                   <p className="">Don't have an account? <a href="/signup" className="font-medium text-indigo-600 hover:text-indigo-500">Sign up</a></p>
@@ -83,7 +87,7 @@ export default function Login() {
                     <img src="https://floatui.com/logo.svg" width={150} className="mx-auto" />
                     <div className="mt-5 space-y-2">
                         <h3 className="text-gray-800 text-2xl font-bold sm:text-3xl">Log in to your account</h3>
-                        <p className="">Don't have an account? <a href="javascript:void(0)" className="font-medium text-indigo-600 hover:text-indigo-500">Sign up</a></p>
+                        <p className="">Don't have an account? <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">Sign up</a></p>
                     </div>
                 </div>
                 <form
@@ -116,7 +120,7 @@ export default function Login() {
                         Sign in
                     </button>
                     <div className="text-center">
-                        <a href="javascript:void(0)" className="hover:text-indigo-600">Forgot password?</a>
+                        <a href="#" className="hover:text-indigo-600">Forgot password?</a>
                     </div>
                 </form>
             </div>

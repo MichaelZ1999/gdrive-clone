@@ -1,19 +1,24 @@
 import React, { useState } from 'react'
-import { Button, Modal, Form } from 'react-bootstrap'
+import { Modal, Form } from 'react-bootstrap'
+import { Button } from 'antd'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFolderPlus } from '@fortawesome/free-solid-svg-icons'
 import { database } from '../../firebase'
 import { useAuth } from '../../contexts/AuthContext'
 import { IFolder } from '../../models/Folder';
 import {  addDoc } from "firebase/firestore"; 
-import addfoldericon from '../addfoldericon.png'
+import addfoldericon from '../../assets/addfoldericon.png'
+
+
+
+
 interface AddFolderButtonProps {
     currentFolder: IFolder | null;
   }
   
   const ROOT_FOLDER: IFolder = {
     name: 'Root',
-    id: null,
+    id: 'root',
     path: [],
   };
 
@@ -36,16 +41,15 @@ function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     return
     e.preventDefault()
     
-    if (currentFolder == null) return
-    const path = [...currentFolder.path]
+    const path = currentFolder?[...currentFolder.path]:[...ROOT_FOLDER.path]
     
-    if (currentFolder !== ROOT_FOLDER) {
+    if (currentFolder) {
           path.push({ name: currentFolder.name, id: currentFolder.id })
         }
     
         addDoc(database.addFolders,
        { name: name,
-        parentId: currentFolder.id,
+        parentId: currentFolder?currentFolder.id:ROOT_FOLDER.id,
         userId: currentUser.uid,
         path: path,
         createdAt: database.getCurrentTimestamp(),
@@ -55,8 +59,13 @@ function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 }
 return (
     <>
-        <Button onClick={openModal} variant="outline-success" size="sm">
-        <img src={addfoldericon} className="mr-2 h-10 w-10"/>
+        <Button onClick={openModal}
+            type="default"
+            shape="round"
+            size="small"
+            className="flex-row"
+            style={{height: 'auto'}}>
+        <img src={addfoldericon} className="mr-2 h-10 w-10"  alt="Add Folder Icon" />
         </Button>
         
 
@@ -82,7 +91,7 @@ return (
                     <div>
                         <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Folder Name</label>
                         <input type="text"
-                            required
+                            
                             value={name}
                             onChange={e => setName(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="my photos" required/>
                     </div>

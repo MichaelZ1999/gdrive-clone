@@ -1,13 +1,18 @@
 import React from 'react'
 import { Navbar, Nav } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import logoFile from '../../assets/File3.png'
 
 export default function NavbarComponent(): JSX.Element {
   return (
     
   <div className="container mx-auto w-full">
     <div className="flex w-full items-center justify-evenly pt-5">
-      <a className="flex items-center text-3xl font-bold text-indigo-400 no-underline hover:no-underline lg:text-4xl" href="#"> d<span className="bg-gradient-to-r from-green-400 via-pink-500 to-purple-500 bg-clip-text text-transparent">ddrive</span> </a>
+    <a className="flex items-center text-3xl font-bold text-indigo-400 no-underline hover:no-underline lg:text-4xl" href="/home-page">  
+    <img src={logoFile} width={120} height={50} alt="Float UI logo" />
+    </a>
+    
+
   
       <div className="flex w-1/2 content-center justify-end">
         <a className="hover:text-underline inline-block h-10 transform p-2 text-center text-blue-300 no-underline duration-300 ease-in-out hover:scale-125 hover:text-pink-500 md:h-auto md:p-4" href="https://twitter.com/">

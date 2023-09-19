@@ -1,12 +1,13 @@
 import React from 'react'
 import Footer from './Footer'
-import appstoreicon from '../AppStore.png'
-import playstoreicon from '../PlayStore.png'
-
+import appstoreicon from '../../assets/AppStore.png'
+import playstoreicon from '../../assets/PlayStore.png'
+import { Divider } from 'antd'
 
 export default function Hero() {
   return (
     <>
+    
         <div className='flex flex-col min-h-screen justify-between'>
             <div >
                 <div className="max-w-screen-xl mx-auto px-4 py-28 gap-12 text-gray-600 md:px-8 ">
@@ -31,7 +32,9 @@ export default function Hero() {
                             </div>
                             
                             
-                        </div>       
+                        </div> 
+
+                        <Divider plain></Divider>      
                     </div>
                     <div className="mx-auto md:pt-16">
                     <p className="text-blue-400 font-bold pb-8 text-center">

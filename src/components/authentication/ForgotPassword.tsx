@@ -2,8 +2,8 @@ import React, { useState, useRef, FormEvent } from 'react'
 import { Form, Button, Card, FormLabel, FormControl, Alert} from 'react-bootstrap'
 import { useAuth } from '../../contexts/AuthContext'
 import { Link } from 'react-router-dom'
-import CenteredContainer from './CenteredContainer'
 import firebase from 'firebase/compat'
+import logoFile from '../../assets/File3.png'
 
 
 
@@ -40,8 +40,9 @@ export default function ForgotPassword(): JSX.Element {
       <main className="w-full h-screen flex flex-col items-center justify-center px-4">
       <div className="max-w-sm w-full text-gray-600">
           <div className="text-center">
-          <a className="flex items-center text-4xl font-bold text-indigo-400 no-underline hover:no-underline lg:text-4xl justify-center" href="/home-page"> d<span className="bg-gradient-to-r from-green-400 via-pink-500 to-purple-500 bg-clip-text text-transparent">ddrive</span> </a>
-              <div className="mt-5 space-y-2">
+          <a className="flex items-center text-4xl font-bold text-indigo-400 no-underline hover:no-underline lg:text-4xl justify-center" href="/home-page"> 
+            <img src={logoFile} width={120} height={50} alt="Float UI logo" />
+          </a>              <div className="mt-5 space-y-2">
                   <h3 className="text-gray-800 text-2xl font-bold sm:text-3xl">Password Reset</h3>
               </div>
           </div>
