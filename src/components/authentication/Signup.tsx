@@ -4,12 +4,13 @@ import { Form, Button, Card, FormLabel, FormControl, Alert} from 'react-bootstra
 
 import { Link, useNavigate } from 'react-router-dom'
 import logoFile from '../../assets/File3.png'
-import { useAuth } from '../../contexts/AuthContext'
+import { useAuth, User } from '../../contexts/AuthContext';
 
-import { DocumentData, DocumentReference, doc, setDoc } from "firebase/firestore";
+import { DocumentData, DocumentReference, doc, setDoc, addDoc } from "firebase/firestore";
 import { firestore } from '../../firebase';
 import { getAuth } from "firebase/auth";
-
+import { database } from '../../firebase'
+import { user } from '../../models/User';
 
 
 
@@ -17,10 +18,16 @@ export default function SignupComponent() {
       const emailRef = useRef<HTMLInputElement>(null)
       const passwordRef = useRef<HTMLInputElement>(null)
       const passwordConfirmRef = useRef<HTMLInputElement>(null)
-      const { signup } = useAuth()
+      const { signup, currentUser } = useAuth()
       const [error, setError] = useState('')
       const [loading, setLoading] = useState(false)
       const navigate = useNavigate()
+      const [ firstname, setFirstName ] = useState("")
+      const [ lastname, setLastName ] = useState("")
+      const [ age, setAge ] = useState("")
+      const [ phonenumber, setPhoneNumber ] = useState("")
+      const [ gender, setGender ] = useState("")
+      const [ profilepicture, setProfilePicture ] = useState("")
       
 
       async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
@@ -33,21 +40,22 @@ export default function SignupComponent() {
       try {
         setError('')
         setLoading(true)
-        await  signup(emailRef.current!.value, passwordRef.current!.value)
-
-        const auth = getAuth();
-        const user = auth.currentUser;
-        const uid = user?.uid;
-        const userRef = doc(firestore, "Users");
+        const response = await signup(emailRef.current!.value, passwordRef.current!.value)
+        const newUser = response.user;
         
-        await AddDoc(userRef, {
-            firstName: "",
-            lastName: "",
-            phoneNumber: "",
-            age: null,
-            gender: "",
-            profilePicture: "",
-        });
+        if (newUser)
+                    {   await addDoc(database.addUsers,
+                            { 
+                            userId: newUser.uid,
+                            firstName: firstname, // Initialize with empty values
+                            lastName: lastname,
+                            phoneNumber: phonenumber,
+                            age: age,
+                            gender: gender,
+                            profilePicture: profilepicture,
+                            
+                            })
+                    }
         navigate('/login')
       } catch {
         setError('Failed to create an account')
@@ -119,35 +127,4 @@ export default function SignupComponent() {
   )
 }
 
-
-{/* <CenteredContainer>
-      <Card>
-        <Card.Body>
-            <h2 className='text-center mb-4'> SIGN UP </h2>
-            {error && <Alert variant='danger'> {error}  </Alert>}
-            <Form onSubmit={handleSubmit}>
-                <Form.Group id="email">
-                    <FormLabel>Email</FormLabel>
-                    <FormControl type="email" ref={emailRef} required/>
-                </Form.Group>
-                <Form.Group id="password">
-                    <FormLabel>Password</FormLabel>
-                    <FormControl type="password" ref={passwordRef} required/>
-                </Form.Group>
-                <Form.Group id="password-confirm">
-                    <FormLabel>Password Confirmation</FormLabel>
-                    <FormControl type="password" ref={passwordConfirmRef} required
-                    />
-                </Form.Group>
-                <Button disabled={loading} className='text-center mt-3 w-100' type='submit'>
-                    Sign Up
-                </Button>
-            </Form>
-        </Card.Body>
-      </Card>
-      
-    </CenteredContainer> */}
-function AddDoc(userRef: DocumentReference<DocumentData, DocumentData>, arg1: { firstName: string; lastName: string; phoneNumber: string; age: null; gender: string; profilePicture: string }) {
-    throw new Error('Function not implemented.')
-}
 

@@ -69,7 +69,7 @@ export default function UpdateProfile() {
         </Card.Body>
       </Card>
       <div className='w-100 text-center mt-2'>
-       <Link to= "/user">Cancel</Link>
+       <Link to= "/home/folder/root">Cancel</Link>
       </div>
     </>
   )
