@@ -53,6 +53,8 @@ export default function SignupComponent() {
                             age: age,
                             gender: gender,
                             profilePicture: profilepicture,
+                            createdAt: database.getCurrentTimestamp(),
+
                             
                             })
                     }
