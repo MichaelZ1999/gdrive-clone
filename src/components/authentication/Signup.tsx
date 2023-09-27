@@ -7,9 +7,8 @@ import logoFile from '../../assets/File3.png'
 import { useAuth, User } from '../../contexts/AuthContext';
 
 import { DocumentData, DocumentReference, doc, setDoc, addDoc } from "firebase/firestore";
-import { firestore } from '../../firebase';
 import { getAuth } from "firebase/auth";
-import { database } from '../../firebase'
+import { database,firestore } from '../../firebase'
 import { user } from '../../models/User';
 
 
@@ -27,7 +26,7 @@ export default function SignupComponent() {
       const [ age, setAge ] = useState("")
       const [ phonenumber, setPhoneNumber ] = useState("")
       const [ gender, setGender ] = useState("")
-      const [ profilepicture, setProfilePicture ] = useState("")
+    //   const [ profilepicture, setProfilePicture ] = useState("")
       
 
       async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
@@ -44,15 +43,15 @@ export default function SignupComponent() {
         const newUser = response.user;
         
         if (newUser)
-                    {   await addDoc(database.addUsers,
+                    {   await setDoc(doc(firestore, "users", newUser.uid),
                             { 
-                            userId: newUser.uid,
+                            id: newUser.uid,
                             firstName: firstname, // Initialize with empty values
                             lastName: lastname,
                             phoneNumber: phonenumber,
                             age: age,
                             gender: gender,
-                            profilePicture: profilepicture,
+                            //profilePicture: profilepicture,
                             createdAt: database.getCurrentTimestamp(),
 
                             

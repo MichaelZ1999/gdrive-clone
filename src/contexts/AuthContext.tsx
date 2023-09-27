@@ -4,6 +4,7 @@ import { database, auth } from '../firebase';
 import type { UserInfo } from 'firebase/auth'
 import { Auth } from 'firebase/auth'
 import { getAuth, createUserWithEmailAndPassword,signInWithEmailAndPassword ,sendPasswordResetEmail,updateEmail,updatePassword} from "firebase/auth";
+import { doc, setDoc, updateDoc } from "firebase/firestore";
 
 export interface User extends Omit<UserInfo, 'providerId'> {
   emailVerified: boolean;
@@ -11,14 +12,15 @@ export interface User extends Omit<UserInfo, 'providerId'> {
 
 
 interface AuthContextProps {
-  
+  currentUser:User | null;
   signup: (email: string, password: string) => Promise<any>;
   login: (email: string, password: string) => Promise<any>
   logout: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
   onUpdateEmail: (email: string) => Promise<void>;
   onUpdatePassword: (password: string) => Promise<void>;
-  currentUser:User | null
+  // updateUserProfile: (firstName: string, lastName: string, age: string, gender: string, phoneNumber: string) => Promise<void>;
+  
 }
 
 
@@ -66,6 +68,25 @@ export function AuthProvider({ children }: { children: React.ReactNode}) {
       return updatePassword(auth.currentUser,password)
     } throw new Error('Cannot update password. No current user available.') 
   }
+
+  // function updateUserProfile(firstName: string, lastName: string, age: string, gender: string, phonenumber: string/* other fields */) {
+  //   const currentUser = auth.currentUser;
+  //   if (currentUser) {
+  //     const userDocRef = doc(database.addUsers, currentUser.uid);
+  //     return updateDoc(userDocRef , {
+  //       firstName: firstName,
+  //       lastName: lastName,
+  //       age: age,
+  //       gender: gender,
+  //       phonenumber: phonenumber,
+        
+
+
+  //     });
+  //   } else {
+  //     // Handle error when there is no current user
+  //   }
+  // }
   
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -83,7 +104,8 @@ export function AuthProvider({ children }: { children: React.ReactNode}) {
     logout,
     resetPassword,
     onUpdateEmail,
-    onUpdatePassword
+    onUpdatePassword, 
+    // updateUserProfile,
   }
 
   return (

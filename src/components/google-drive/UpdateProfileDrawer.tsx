@@ -1,17 +1,23 @@
 import React, { useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Col, DatePicker, Drawer, Form, Input, Row, Select, Space, InputNumber } from 'antd';
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, updateDoc } from "firebase/firestore";
 import { firestore } from '../../firebase';
 import { Auth, createUserWithEmailAndPassword } from "firebase/auth";
-import { useAuth } from '../../contexts/AuthContext'
+import { useAuth,  } from '../../contexts/AuthContext'
 import { getAuth } from "firebase/auth";
 
 const { Option } = Select;
 
 export default function UpdateProfileDrawer() {  
-  
+  const { currentUser } = useAuth();
   const [open, setOpen] = useState(true);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [age, setAge] = useState('');
+  const [gender, setGender] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  // const [profilepicture, setProfilePicture] = useState('');
   const showDrawer = () => {
     setOpen(true);
   };
@@ -19,6 +25,7 @@ export default function UpdateProfileDrawer() {
   const onClose = () => {
     setOpen(false);
   };
+
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
       <Select style={{ width: 75 }}>
@@ -28,24 +35,36 @@ export default function UpdateProfileDrawer() {
       </Select>
     </Form.Item>
   );
-  const handleUpdateProfile = async (values: any) => {
-    try {
-      const auth = getAuth(); // Retrieve the Firebase auth instance
-      const user = auth.currentUser; // Get the currently logged in user object
-      const uid = user?.uid; // Access the UID property from the user object
-      console.log("UID:", uid);
 
-      // Update the user document in Firestore with the form values
-      const userRef = doc(firestore, "Users", uid);
-      await setDoc(userRef, values, { merge: true });
-      // Close the drawer
-      setOpen(false);
-    } catch (error) {
-      // Handle any errors
-      console.log("Error updating profile:", error);
-    }
-  };
+  // Inside the UpdateProfileDrawer component
+    
+  // const handleUpdateProfile = async (values: any) => {
+  //   try {
+  //     const auth = getAuth(); // Retrieve the Firebase auth instance
+  //     const user = auth.currentUser; // Get the currently logged in user object
+  //     const uid = user?.uid; // Access the UID property from the user object
+  //     console.log("UID:", uid);
 
+  //     // Update the user document in Firestore with the form values
+  //     const userRef = doc(firestore, "Users", uid);
+  //     await setDoc(userRef, values, { merge: true });
+  //     // Close the drawer
+  //     setOpen(false);
+  //   } catch (error) {
+  //     // Handle any errors
+  //     console.log("Error updating profile:", error);
+  //   }
+  // };
+  function handleSubmit() {
+   
+    return updateDoc(doc(firestore, 'users', currentUser.uid),  {
+      firstName: firstName,
+      lastName: lastName,
+      gender: gender,
+      age: age,
+      phoneNumber: phoneNumber,
+    });
+  }
 
   return (
     <>
@@ -61,13 +80,13 @@ export default function UpdateProfileDrawer() {
         extra={
           <Space>
             <Button onClick={onClose}>Cancel</Button>
-            <Button onClick={onClose} type="primary" className='bg-black text-white hover:bg-green-400' >
+            <Button onClick={handleSubmit} type="primary" className='bg-black text-white hover:bg-green-400' >
               Submit
             </Button>
           </Space>
         }
       >
-        <Form layout="vertical" hideRequiredMark onFinish={handleUpdateProfile}>
+        <Form layout="vertical" hideRequiredMark >
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item
@@ -75,7 +94,7 @@ export default function UpdateProfileDrawer() {
                 label="First Name"
                 rules={[{ required: true, message: 'Enter your First Name' }]}
               >
-                <Input placeholder="John"  />
+                <Input placeholder="John" value={firstName}  onChange={(e) => setFirstName(e.target.value)}  />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -84,23 +103,10 @@ export default function UpdateProfileDrawer() {
                 label="Last Name"
                 rules={[{ required: true, message: 'Enter your Last Name' }]}
               >
-                <Input placeholder="Doe" />
+                <Input placeholder="Doe" value={lastName}  onChange={(e) => setLastName(e.target.value)}  />
               </Form.Item>
             </Col>
-            {/* <Col span={12}>
-              <Form.Item
-                name="recoveryemail"
-                label="Recovery Email"
-                rules={[{ required: true, message: 'Please enter url' }]}
-              >
-                <Input
-                  style={{ width: '100%' }}
-                  addonBefore="http://"
-                  addonAfter=".com"
-                  placeholder="Please enter your Email"
-                />
-              </Form.Item>
-            </Col> */}
+            
           </Row>
           <Row gutter={16}>
             <Col span={12}>
@@ -109,7 +115,7 @@ export default function UpdateProfileDrawer() {
                 label="Gender"
                 rules={[{ required: true, message: 'Please select your Gender' }]}
               >
-                <Select placeholder="Please select your Gender">
+                <Select placeholder="Please select your Gender" value={gender} onChange={(value) => setGender(value)}>
                   <Option value="male">Male</Option>
                   <Option value="female">Female</Option>
                 </Select>
@@ -117,11 +123,11 @@ export default function UpdateProfileDrawer() {
             </Col>
             <Col span={12}>
               <Form.Item
-                name={['user', 'age']} 
+                name="age"
                 label="Age" 
                 rules={[{ type: 'number', min: 1, max: 99 }]}
               >
-                <InputNumber />
+                <InputNumber value={age} onChange={(value) => setAge(value)}/>
               </Form.Item>
             </Col>
           </Row>
@@ -132,7 +138,7 @@ export default function UpdateProfileDrawer() {
               label="Phone Number"
               rules={[{ required: true, message: 'Please input your phone number!' }]}
             >
-              <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
+              <Input addonBefore={prefixSelector} style={{ width: '100%' }}  value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)}  />
             </Form.Item>
             </Col>
             
