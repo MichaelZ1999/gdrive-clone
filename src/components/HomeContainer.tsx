@@ -11,7 +11,24 @@ import { PlusOutlined } from '@ant-design/icons';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Button, Col, DatePicker, Drawer, Form, Input, Row, Select, Space } from 'antd';
 import {
-  DesktopOutlined,FileOutlined,PieChartOutlined, TeamOutlined,UserOutlined,ClearOutlined,LoadingOutlined,HolderOutlined,HeartOutlined,MenuOutlined,PaperClipOutlined,VideoCameraOutlined,LogoutOutlined,MenuFoldOutlined,FolderOutlined,} from '@ant-design/icons';
+  
+  DesktopOutlined,
+  FileOutlined,
+  PieChartOutlined,
+  TeamOutlined,
+  UserOutlined,
+  ClearOutlined,
+  LoadingOutlined,
+  HolderOutlined,
+  HeartOutlined,
+  MenuOutlined,
+  PaperClipOutlined,
+  VideoCameraOutlined,
+  LogoutOutlined,
+  MenuFoldOutlined,
+  FolderOutlined,
+
+} from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import FolderBreadcrumbs from './google-drive/FolderBreadcrumbs';
@@ -45,7 +62,7 @@ function getItem(
 
 const items: MenuItem[] = [
   getItem('Dashboard', 'dashboard', <PieChartOutlined />),
-  getItem('Favorites', 'favorites', <HeartOutlined />),
+  getItem('Favorite', 'favorite', <HeartOutlined />),
   getItem('Library', 'library', <MenuFoldOutlined />,),
   getItem('Folders', 'folder/root', <FolderOutlined/>),
   getItem('Profile', 'profile', <UserOutlined />,),
