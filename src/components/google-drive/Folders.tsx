@@ -1,3 +1,11 @@
+
+// import MediaViewer from './MediaViewer';
+
+//Addition
+    // const [selectedMedia, setSelectedMedia] = useState<{ type: string; url: string } | null>(null);
+ // const [selectedOption, setSelectedOption] = useState<string | null>(null);
+
+  // const [open, setOpen] = useState(false);
 import React from "react"
 import FolderBreadcrumbs from "./FolderBreadcrumbs"
 import Folder from "./Folder"
@@ -7,35 +15,26 @@ import { useParams, useLocation } from 'react-router'
 import { useFolder } from '../../hooks/useFolder'
 import { useState } from "react"
 import File from "./File"
-// import MediaViewer from './MediaViewer';
-
-
+import { IFolder } from "../../models/Folder"
 
 export default function Folders() {
-const { folderId } = useParams<{ folderId: string }>();
-  // const [selectedOption, setSelectedOption] = useState<string | null>(null);
-
-  // const [open, setOpen] = useState(false);
-  const [ curentFolder, setCurrentFolder ]= useState()
-  const { folder, childFolders, childFiles } = useFolder(folderId, curentFolder)
+  const { folderId } = useParams<{ folderId: string }>();
+  const [curentFolder, setCurrentFolder] = useState<IFolder | undefined>();
+    const { folder, childFolders, childFiles } = useFolder(folderId, curentFolder)
     console.log(folder,'folrder>>>')
-//Addition
-    // const [selectedMedia, setSelectedMedia] = useState<{ type: string; url: string } | null>(null);
 
 
 
   return (
     <>
       <FolderBreadcrumbs currentFolder={folder} />
-              <div className="flex-1 flex items-center justify-end space-x-2 sm:space-x-6">              
-                <div className="flex flex-row-reverse">
-                  <AddFileButton currentFolder={folder} />
-                  <AddFolderButton currentFolder={folder} />
-                  </div>
-              </div>
-          
+      <div className="flex-1 flex items-center justify-end space-x-2 sm:space-x-6">              
+      <div className="flex flex-row-reverse">
+            <AddFileButton currentFolder={folder} />
+            <AddFolderButton currentFolder={folder} />
+      </div>
+      </div>
           {childFolders.length > 0 && (
-            
             <div className='flex justify-around '>
               <div className="grid grid-cols-4 grid-flow-row gap-7 ">
               {
@@ -67,25 +66,26 @@ const { folderId } = useParams<{ folderId: string }>();
                   >
                     <File
                         file={childFile}
-                        //openMedia={(type: string, url: string) => setSelectedMedia({ type, url })}
-                    />
+                       />
                   </div>
                 ) )}
             </div>
             </div>
             
           )}
-          {/* {selectedMedia && (
+          
+    </>
+  )
+}
+{/* {selectedMedia && (
         <MediaViewer
           mediaType={selectedMedia.type}
           mediaUrl={selectedMedia.url}
           onClose={() => setSelectedMedia(null)}
         />
       )} */}
-    </>
-  )
-}
 
 
 
-
+ //openMedia={(type: string, url: string) => setSelectedMedia({ type, url })}
+                    

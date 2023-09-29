@@ -1,7 +1,7 @@
 import { useReducer, useEffect } from "react"
 import { database ,firestore} from "../firebase"
 import { useAuth } from "../contexts/AuthContext"
-import { collection, onSnapshot,query, where,orderBy } from "firebase/firestore";
+import { collection, onSnapshot,query, where, orderBy, addDoc, setDoc, doc } from "firebase/firestore";
 
 //N//
 const ACTIONS = {
@@ -93,7 +93,20 @@ export function useFolder(folderId = null, folder = null) {
       })
     });
       }, [folderId, currentUser])  
-    
-
     return state
-}
+  }
+// const addToFavorites = async (item: any) => {
+//   try {
+//     // Add the item to the favorites collection
+
+//   await setDoc(doc(firestore, "favorites", currentUser.uid), {
+//       itemId: item.id,
+//       itemType: item.type, // "folder" or "file"
+//       userId: currentUser.uid,
+//       });
+//       console.log('Item added to favorites successfully!');
+//     } catch (error) {
+//       console.log('Error adding item to favorites:', error);
+//       }
+//     };
+//   return {...state, addToFavorites}

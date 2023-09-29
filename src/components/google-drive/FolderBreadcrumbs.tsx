@@ -22,7 +22,7 @@ export default function FolderBreadcrumbs({ currentFolder }: FolderBreadcrumbsPr
   let breadcrumbItems: BreadcrumbItem[] = [
     {
       text: <HomeOutlined />,
-      link: '/',
+      link: '/home/folder/root',
     },
   ];
 

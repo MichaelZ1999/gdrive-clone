@@ -1,10 +1,8 @@
 import React from 'react'
 import { useState, useContext, useEffect } from 'react'
-import { database, auth } from '../firebase';
+import {  auth } from '../firebase';
 import type { UserInfo } from 'firebase/auth'
-import { Auth } from 'firebase/auth'
-import { getAuth, createUserWithEmailAndPassword,signInWithEmailAndPassword ,sendPasswordResetEmail,updateEmail,updatePassword} from "firebase/auth";
-import { doc, setDoc, updateDoc } from "firebase/firestore";
+import {  createUserWithEmailAndPassword,signInWithEmailAndPassword ,sendPasswordResetEmail,updateEmail,updatePassword} from "firebase/auth";
 
 export interface User extends Omit<UserInfo, 'providerId'> {
   emailVerified: boolean;
@@ -19,7 +17,6 @@ interface AuthContextProps {
   resetPassword: (email: string) => Promise<void>;
   onUpdateEmail: (email: string) => Promise<void>;
   onUpdatePassword: (password: string) => Promise<void>;
-  // updateUserProfile: (firstName: string, lastName: string, age: string, gender: string, phoneNumber: string) => Promise<void>;
   
 }
 
@@ -69,24 +66,7 @@ export function AuthProvider({ children }: { children: React.ReactNode}) {
     } throw new Error('Cannot update password. No current user available.') 
   }
 
-  // function updateUserProfile(firstName: string, lastName: string, age: string, gender: string, phonenumber: string/* other fields */) {
-  //   const currentUser = auth.currentUser;
-  //   if (currentUser) {
-  //     const userDocRef = doc(database.addUsers, currentUser.uid);
-  //     return updateDoc(userDocRef , {
-  //       firstName: firstName,
-  //       lastName: lastName,
-  //       age: age,
-  //       gender: gender,
-  //       phonenumber: phonenumber,
-        
 
-
-  //     });
-  //   } else {
-  //     // Handle error when there is no current user
-  //   }
-  // }
   
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -105,7 +85,6 @@ export function AuthProvider({ children }: { children: React.ReactNode}) {
     resetPassword,
     onUpdateEmail,
     onUpdatePassword, 
-    // updateUserProfile,
   }
 
   return (

@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { Modal, Form } from 'react-bootstrap'
 import { Button } from 'antd'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFolderPlus } from '@fortawesome/free-solid-svg-icons'
+
 import { database } from '../../firebase'
 import { useAuth } from '../../contexts/AuthContext'
 import { IFolder } from '../../models/Folder';
@@ -104,12 +103,6 @@ return (
         </div>
     </div>
 </Modal> 
-
-
-
-
-        
-
     </>
     
   )

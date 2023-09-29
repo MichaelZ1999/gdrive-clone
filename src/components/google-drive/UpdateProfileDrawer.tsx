@@ -26,49 +26,24 @@ export default function UpdateProfileDrawer() {
     setOpen(false);
   };
 
-  const prefixSelector = (
-    <Form.Item name="prefix" noStyle>
-      <Select style={{ width: 75 }}>
-        <Option value="86">+86</Option>
-        <Option value="87">+87</Option>
-        <Option value="+251">+251</Option>
-      </Select>
-    </Form.Item>
-  );
+ 
 
-  // Inside the UpdateProfileDrawer component
-    
-  // const handleUpdateProfile = async (values: any) => {
-  //   try {
-  //     const auth = getAuth(); // Retrieve the Firebase auth instance
-  //     const user = auth.currentUser; // Get the currently logged in user object
-  //     const uid = user?.uid; // Access the UID property from the user object
-  //     console.log("UID:", uid);
-
-  //     // Update the user document in Firestore with the form values
-  //     const userRef = doc(firestore, "Users", uid);
-  //     await setDoc(userRef, values, { merge: true });
-  //     // Close the drawer
-  //     setOpen(false);
-  //   } catch (error) {
-  //     // Handle any errors
-  //     console.log("Error updating profile:", error);
-  //   }
-  // };
+  
   function handleSubmit() {
    
-    return updateDoc(doc(firestore, 'users', currentUser.uid),  {
+    updateDoc(doc(firestore, 'users', currentUser.uid),  {
       firstName: firstName,
       lastName: lastName,
       gender: gender,
       age: age,
       phoneNumber: phoneNumber,
     });
+    onClose();
   }
 
   return (
     <>
-      <Button  className='' onClick={showDrawer} icon={<PlusOutlined />}>
+      <Button  className='h-8 w-8' onClick={showDrawer} icon={<PlusOutlined />}>
         Profile
       </Button>
       <Drawer
@@ -94,7 +69,7 @@ export default function UpdateProfileDrawer() {
                 label="First Name"
                 rules={[{ required: true, message: 'Enter your First Name' }]}
               >
-                <Input placeholder="John" value={firstName}  onChange={(e) => setFirstName(e.target.value)}  />
+                <Input placeholder="John" value={firstName}  onChange={(e) => setFirstName(e.target.value)} required />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -103,7 +78,7 @@ export default function UpdateProfileDrawer() {
                 label="Last Name"
                 rules={[{ required: true, message: 'Enter your Last Name' }]}
               >
-                <Input placeholder="Doe" value={lastName}  onChange={(e) => setLastName(e.target.value)}  />
+                <Input placeholder="Doe" value={lastName}  onChange={(e) => setLastName(e.target.value)} required />
               </Form.Item>
             </Col>
             
@@ -115,7 +90,7 @@ export default function UpdateProfileDrawer() {
                 label="Gender"
                 rules={[{ required: true, message: 'Please select your Gender' }]}
               >
-                <Select placeholder="Please select your Gender" value={gender} onChange={(value) => setGender(value)}>
+                <Select placeholder="Please select your Gender" value={gender} onChange={(value) => setGender(value)} >
                   <Option value="male">Male</Option>
                   <Option value="female">Female</Option>
                 </Select>
@@ -127,7 +102,7 @@ export default function UpdateProfileDrawer() {
                 label="Age" 
                 rules={[{ type: 'number', min: 1, max: 99 }]}
               >
-                <InputNumber value={age} onChange={(value) => setAge(value)}/>
+                <InputNumber value={age} onChange={(value) => setAge(value)} required />
               </Form.Item>
             </Col>
           </Row>
@@ -138,7 +113,8 @@ export default function UpdateProfileDrawer() {
               label="Phone Number"
               rules={[{ required: true, message: 'Please input your phone number!' }]}
             >
-              <Input addonBefore={prefixSelector} style={{ width: '100%' }}  value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)}  />
+              <Input  style={{ width: '100%' }}  value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} required />
+              {/* addonBefore={prefixSelector} */}
             </Form.Item>
             </Col>
             
