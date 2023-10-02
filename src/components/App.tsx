@@ -16,6 +16,9 @@ import Collector from "./Collector";
 import AddFolderDrawer from './google-drive/UpdateProfileDrawer';
 import HomeContainer from './HomeContainer';
 import Folders from './google-drive/Folders';
+import Favorites from './google-drive/Favorites';
+import Trash from './google-drive/Trash';
+import ExistingFolders from './google-drive/ExistingFolders';
 
 
 
@@ -30,9 +33,13 @@ function App() {
                     <Route path="uiexperimental/*" element={<UIExperimental />} />
                     <Route path="profile/*" element={<Profile />} />
                     <Route path="update-profile/*" element={<UpdateProfile />} />
+                    <Route path="favorites/*" element={<Favorites />} />
+                    <Route path="trash/*" element={<Trash />} />
                     
                     <Route path="dashboard" element={<Dashboard/>} />
-                    <Route path="folder/:folderId/*"element={<Folders />} />
+                    {/* <Route path="folder/:folderId/*"element={<Folders />} /> */}
+                    <Route path="folder/:folderId/*"element={<ExistingFolders />} />
+
                 </Route>
                 <Route path='/collector' element={<Collector/>}/>
                 <Route path="/signup" element={<Signup />} />

@@ -7,6 +7,8 @@ export interface ActionType {
   
   export interface StateType {
     folderId: string | null;
+    isFavorite: boolean;
+    isTrash: boolean;
     folder: any;
     childFiles: any[];
     childFolders: any[];

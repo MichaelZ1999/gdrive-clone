@@ -19,7 +19,7 @@ const { folderId } = useParams<{ folderId: string }>();
   const [ curentFolder, setCurrentFolder ]= useState()
   const { folder, childFolders, childFiles } = useFolder(folderId, curentFolder)
     console.log(folder,'folrder>>>')
-//Addition
+    //Addition
     // const [selectedMedia, setSelectedMedia] = useState<{ type: string; url: string } | null>(null);
 
 
@@ -75,17 +75,26 @@ const { folderId } = useParams<{ folderId: string }>();
             </div>
             
           )}
-          {/* {selectedMedia && (
-        <MediaViewer
-          mediaType={selectedMedia.type}
-          mediaUrl={selectedMedia.url}
-          onClose={() => setSelectedMedia(null)}
-        />
-      )} */}
+          
     </>
   )
 }
 
 
 
+//openMedia={(type: string, url: string) => setSelectedMedia({ type, url })}
+{/* {selectedMedia && (
+        <MediaViewer
+          mediaType={selectedMedia.type}
+          mediaUrl={selectedMedia.url}
+          onClose={() => setSelectedMedia(null)}
+        />
+      )} */}
+//Addition
+    // const [selectedMedia, setSelectedMedia] = useState<{ type: string; url: string } | null>(null);
 
+// import MediaViewer from './MediaViewer';
+
+  // const [selectedOption, setSelectedOption] = useState<string | null>(null);
+
+  // const [open, setOpen] = useState(false);

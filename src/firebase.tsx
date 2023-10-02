@@ -25,10 +25,7 @@ export const database = {
   getFiles:doc(collection(firestore,'files')),
   addUsers:collection(firestore,'users'),
   getUsers:doc(collection(firestore,'users')),
-  addTrashs:collection(firestore,'trashs'),
-  getTrashs:doc(collection(firestore,'trashs')),
-  addFavs:collection(firestore,'favs'),
-  getFavs:doc(collection(firestore,'favs')),
+  
   formatDoc: (doc: DocumentData) => {
     return { id: doc.id, ...doc.data() };
   },
@@ -40,7 +37,10 @@ export const auth =getAuth()
 
 
 
-
+// addTrashs:collection(firestore,'trashs'),
+  // getTrashs:doc(collection(firestore,'trashs')),
+  // addFavs:collection(firestore,'favs'),
+  // getFavs:doc(collection(firestore,'favs')),
 
 
 

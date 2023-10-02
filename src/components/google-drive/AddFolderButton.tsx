@@ -53,6 +53,8 @@ function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         userId: currentUser.uid,
         path: path,
         createdAt: database.getCurrentTimestamp(),
+        isFavorite: false,
+        isTrash: false,
     })
     setName("")
     closeModal()

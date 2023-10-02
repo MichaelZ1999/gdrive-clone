@@ -9,7 +9,7 @@ import { v4 as uuidv4} from 'uuid'
 import { Button, Progress, notification, message } from "antd"
 
 
-import {  getDocs, query, where,addDoc,updateDoc} from "firebase/firestore"
+import {  getDocs, query, where,addDoc} from "firebase/firestore"
 import { ref,getDownloadURL,uploadBytesResumable } from "firebase/storage";
 import addfileicon from '../../assets/addfileicon.png'
 
@@ -110,6 +110,8 @@ export default function AddFileButton({ currentFolder }: AddFileButtonProps): JS
                             createdAt: database.getCurrentTimestamp(),
                             folderId: currentFolder?currentFolder.id:ROOT_FOLDER.id,
                             userId: currentUser.uid,
+                            isFavorite: false,
+                            isTrash: false,
                           })
                     }
                   });
