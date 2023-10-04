@@ -68,28 +68,28 @@ const App: React.FC = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-  const renderContentComponent = () => {
-    switch (selectedOption) {
-      case '1':
-        return <Dashboard />;
-      case '2':
-        // return <FoldersComponent />;
-      case '3':
-        return <Folders />;
-      case '4':
-        return <Library/>;
+  // const renderContentComponent = () => {
+  //   switch (selectedOption) {
+  //     case '1':
+  //       return <Dashboard />;
+  //     case '2':
+  //       // return <FoldersComponent />;
+  //     case '3':
+  //       return <Folders />;
+  //     case '4':
+  //       return <Library/>;
       
-      case '5':
-        return <TeamComponent />;
-      case '6':
-      case '8':
-        return <TeamComponent />;
-      case '9':
-        return <FilesComponent />;
-      default:
-        return null;
-    }
-  };
+  //     case '5':
+  //       return <TeamComponent />;
+  //     case '6':
+  //     case '8':
+  //       return <TeamComponent />;
+  //     case '9':
+  //       return <FilesComponent />;
+  //     default:
+  //       return null;
+  //   }
+  // };
 
   return (
     <>
@@ -108,7 +108,7 @@ const App: React.FC = () => {
         />
       </Sider>
       <Layout>
-      <Header style={{ padding: 0, background: colorBgContainer }}></Header>
+      {/* <Header style={{ padding: 0, background: colorBgContainer }}>Header</Header> */}
         {/* <UpdateProfileDrawer/> */}
         <UIExperimental/>
         <Content style={{ margin: '0 16px', paddingTop: 16 }}>

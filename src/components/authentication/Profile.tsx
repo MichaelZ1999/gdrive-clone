@@ -47,7 +47,7 @@ export default function Profile() {
 
   return (
     <>
-    <Button onClick={handleLogout}>Log Out</Button>
+    
     <UIExperimental/>
     <Form onSubmit={handlesubmit}>
       <FormLabel>First Name</FormLabel>
@@ -64,7 +64,7 @@ export default function Profile() {
       UPDATE
     </Button>
     </Form>
-    
+    <Button onClick={handleLogout}>Log Out</Button>
     </>
   )
 }

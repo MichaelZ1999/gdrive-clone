@@ -30,7 +30,7 @@ const ProfileDropDown = (props: Props) => {
     }
 
     const navigation = [
-        { title: "Profile", path: "/dashboard/profile" },
+        { title: "Profile", path: "/home/profile" },
         { title: "Log out", path: "/login", onClick: () => handleLogout() },
       ];
 
@@ -93,7 +93,7 @@ export default () => {
     return (
     <>
         <nav className="bg-white border-b">
-            <div className="flex items-center space-x-8 py-3 px-4 max-w-screen-xl mx-auto md:px-8">
+            <div className="flex items-center space-x-8 py-0 px-0 max-w-screen-xl mx-auto ">
                 <div className="flex-none lg:flex-initial">
                     <a href="#">
                         <img
