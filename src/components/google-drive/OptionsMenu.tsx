@@ -14,8 +14,7 @@ const OptionsMenu: React.FC<OptionsMenuProps> = ({ onOptionSelected }) => {
   const menu = (
     <Menu onClick={handleMenuClick}>
       <Menu.Item key="delete">Delete</Menu.Item>
-      <Menu.Item key="restore">Restore</Menu.Item>
-      <Menu.Item key="permanentlyDelete">Permanently Delete</Menu.Item>
+      {/* <Menu.Item key="restore">Restore</Menu.Item> */}
       <Menu.Item key="addToFavorites">Add to Favorites</Menu.Item>
     </Menu>
   );

@@ -37,8 +37,8 @@ function App() {
                     <Route path="trash/*" element={<Trash />} />
                     
                     <Route path="dashboard" element={<Dashboard/>} />
-                    {/* <Route path="folder/:folderId/*"element={<Folders />} /> */}
-                    <Route path="folder/:folderId/*"element={<ExistingFolders />} />
+                    <Route path="folder/:folderId/*"element={<Folders />} />
+                    {/* <Route path="folder/:folderId/*"element={<ExistingFolders />} /> */}
 
                 </Route>
                 <Route path='/collector' element={<Collector/>}/>

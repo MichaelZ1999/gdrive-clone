@@ -39,7 +39,8 @@ const { folderId } = useParams<{ folderId: string }>();
             <div className='flex justify-around '>
               <div className="grid grid-cols-4 grid-flow-row gap-7 ">
               {
-                childFolders.map((childFolder: any)  => (
+                childFolders.filter((childFolder: any) => !childFolder.isTrash)
+                            .map((childFolder: any)  => (
                   <div
                     key={childFolder.id}
                     style={{maxWidth: "150px"}}
@@ -59,7 +60,7 @@ const { folderId } = useParams<{ folderId: string }>();
               <div className='flex justify-evenly  '>
                 <div className="grid grid-cols-4 grid-flow-row gap-7">
               {
-                childFiles.map((childFile: any) => (
+                childFiles.filter((childFile: any) => !childFile.isTrash).map((childFile: any) => (
                   <div
                     key={childFile.id}
                     style={{maxWidth: "150px"}}
@@ -67,7 +68,6 @@ const { folderId } = useParams<{ folderId: string }>();
                   >
                     <File
                         file={childFile}
-                        //openMedia={(type: string, url: string) => setSelectedMedia({ type, url })}
                     />
                   </div>
                 ) )}
@@ -80,6 +80,7 @@ const { folderId } = useParams<{ folderId: string }>();
   )
 }
 
+                        //openMedia={(type: string, url: string) => setSelectedMedia({ type, url })}
 
 
 //openMedia={(type: string, url: string) => setSelectedMedia({ type, url })}

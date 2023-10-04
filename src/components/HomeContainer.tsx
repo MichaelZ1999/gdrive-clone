@@ -108,8 +108,8 @@ const App: React.FC = () => {
         />
       </Sider>
       <Layout>
-        <Header style={{ padding: 0 }} />
-        <UpdateProfileDrawer/>
+      <Header style={{ padding: 0, background: colorBgContainer }}></Header>
+        {/* <UpdateProfileDrawer/> */}
         <UIExperimental/>
         <Content style={{ margin: '0 16px', paddingTop: 16 }}>
           <div style={{ padding: 24, minHeight: 360, background: colorBgContainer }}>

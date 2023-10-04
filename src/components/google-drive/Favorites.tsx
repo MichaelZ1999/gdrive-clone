@@ -51,7 +51,7 @@ const Favorites = () => {
         <div className='flex justify-around '>
         <div className="grid grid-cols-4 grid-flow-row gap-7 ">
           {favoriteFolders.map((folder) => (
-            <Folder key={folder.id} folder={folder} onPress={(fold)=>setCurrentFolder(fold)}/>
+            <Folder key={folder.id} folder={folder} onPress={(fold)=>setCurrentFolder(fold)} />
           ))}
         </div>
         </div>

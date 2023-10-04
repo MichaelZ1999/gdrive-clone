@@ -15,35 +15,37 @@ interface FolderProps {
 export default function Folder({ folder, onPress }: FolderProps): JSX.Element {
 
   const truncatedName = folder.name.length > 10 ? `${folder.name.slice(0, 10)}...` : folder.name;
-  // const handleOptionSelected = (option) => {
-  //   // Handle the selected option based on your requirements
-  //   console.log(`Selected option: ${option}`);
-  // };
   const [isFavorite, setIsFavorite] = useState(false);
   const [isTrash, setIsTrash] = useState(false);
-  const [existingFolders, setExistingFolders] = useState([]);
-  
-  const toggleFavorite = async () => {
-    try {
-      await  
-      updateDoc(doc(firestore, 'folders', folder.id), { isFavorite: !isFavorite });
-      setIsFavorite(!isFavorite);
-    } catch (error) {
-      console.log("Error updating folder:", error);
-    }
-  };
 
-  const toggleTrash = async (folderId) => {
-    try {
-      await 
-      updateDoc(doc(firestore, 'folders', folder.id), { isTrash: !isTrash });
-      setIsTrash(!isTrash);
-      setExistingFolders(existingFolders.filter(folder => folder.id !== folderId));
-    } catch (error) {
-      console.log("Error deleting folder:", error);
+  const handleOptionSelected = (option: string) => {
+    switch (option)
+    {
+      case 'addToFavorites':
+        try {
+            updateDoc(doc(firestore, 'folders', folder.id), { isFavorite: !isFavorite });
+            setIsFavorite(!isFavorite);
+        } catch (error) {
+            console.log("Error updating folder:", error);
+          }
+      break;
+      case 'delete': 
+        try {
+            updateDoc(doc(firestore, 'folders', folder.id), { isTrash: !isTrash });
+            setIsTrash(!isTrash);
+        } catch (error) {
+            console.log("Error deleting folder:", error);
+        }
+      break;
+      default: 
+      break;  
     }
+    // Handle the selected option based on your requirements
+    console.log(`Selected option: ${option}`);
   };
   
+
+ 
   return (
     <div className="flex flex-col">
       <Link to={`/home/folder/${folder.id}`}>
@@ -60,11 +62,7 @@ export default function Folder({ folder, onPress }: FolderProps): JSX.Element {
        
 
       </Link>
-      {/* <OptionsMenu onOptionSelected={handleOptionSelected} /> */}
-
-      <Button onClick={toggleFavorite}>{isFavorite ? 'Remove from favorites' : 'Add to favorites'}</Button>
-      <Button onClick={toggleTrash}>{isTrash ? 'Restore' : 'Delete'}</Button>
-
+      <OptionsMenu onOptionSelected={handleOptionSelected} />
     </div>
   );
 }

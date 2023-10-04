@@ -2,7 +2,7 @@
 import { Button } from 'antd';
 import { firestore } from '../../firebase';
 import { updateDoc, doc } from 'firebase/firestore';
-
+import OptionsMenu from './OptionsMenu';
 export interface FileProps {
   file: {
     url: string;
@@ -20,31 +20,35 @@ export default function File({ file }: FileProps): JSX.Element {
   const [isFavorite, setIsFavorite] = useState(false);
   const [isTrash, setIsTrash] = useState(false);
   
-  const toggleFavorite = async () => {
-    try {
-      await 
-       
-      updateDoc(doc(firestore, 'files', file.id), { isFavorite: !isFavorite });
-      setIsFavorite(!isFavorite);
-    } catch (error) {
-      console.log("Error updating file:", error);
-    }
-  };
 
-  const toggleTrash = async () => {
-    try {
-      await 
-       
-      updateDoc(doc(firestore, 'files', file.id), { isTrash: !isTrash });
-      setIsTrash(!isTrash);
-    } catch (error) {
-      console.log("Error deleting file:", error);
+  const handleOptionSelected = (option: string) => {
+    switch (option)
+    {
+      case 'addToFavorites':
+        try {
+          updateDoc(doc(firestore, 'files', file.id), { isFavorite: !isFavorite });
+          setIsFavorite(!isFavorite);
+        } catch (error) {
+            console.log("Error updating file:", error);
+          }
+      break;
+      case 'delete': 
+        try {
+          updateDoc(doc(firestore, 'files', file.id), { isTrash: !isTrash });
+          setIsTrash(!isTrash);
+        } catch (error) {
+            console.log("Error deleting file:", error);
+        }
+      break;
+      default: 
+      break;  
     }
-  };
-  const handleOptionSelected = (option) => {
     // Handle the selected option based on your requirements
     console.log(`Selected option: ${option}`);
   };
+
+  
+  
   
   return (
   <>
@@ -54,15 +58,18 @@ export default function File({ file }: FileProps): JSX.Element {
       style={{height: 'auto'}}
      />
      {truncatedName}
-     {/* <OptionsMenu onOptionSelected={handleOptionSelected} /> */}
-
-    <Button onClick={toggleFavorite}>{isFavorite ? 'Remove from favorites' : 'Add to favorites'}</Button>
-    <Button onClick={toggleTrash}>{isTrash ? 'Remove from trash' : 'Trash'}</Button>
-    {/* <OptionsMenu onOptionSelected={handleOptionSelected} /> */}
-  </>
+     <OptionsMenu onOptionSelected={handleOptionSelected} />
+</>
   )
 }
 
+
+
+
+    {/* <Button onClick={toggleFavorite}>{isFavorite ? 'Remove from favorites' : 'Add to favorites'}</Button>
+    <Button onClick={toggleTrash}>{isTrash ? 'Remove from trash' : 'Trash'}</Button> */}
+    {/* <OptionsMenu onOptionSelected={handleOptionSelected} /> */}
+  
 
 {/* <Button onClick={() => openMedia(file.type, file.url)}>
       {file.type === 'video' && <span>Play Video</span>}
