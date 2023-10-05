@@ -101,18 +101,17 @@ export default function AddFileButton({
           const querySnapshot = await getDocs(q);
           const existingFile = querySnapshot.docs[0];
           console.log(existingFile);
-          {
-            addDoc(database.addFiles, {
-              url: downloadURL,
-              name: file.name,
-              createdAt: database.getCurrentTimestamp(),
-              folderId: currentFolder ? currentFolder.id : ROOT_FOLDER.id,
-              userId: currentUser.uid,
-              isFavorite: false,
-              isTrash: false,
-              type: file.type,
-            });
-          }
+
+          addDoc(database.addFiles, {
+            url: downloadURL,
+            name: file.name,
+            createdAt: database.getCurrentTimestamp(),
+            folderId: currentFolder ? currentFolder.id : ROOT_FOLDER.id,
+            userId: currentUser.uid,
+            isFavorite: false,
+            isTrash: false,
+            type: file.type.split("/")[0].split(" ")[0],
+          });
         });
       }
     );
@@ -122,7 +121,7 @@ export default function AddFileButton({
     <>
       <Button>
         <label className="btn btn-outline-success btn-sm m-0 mr-2">
-          <img src={addfileicon} className="mr-2 h-10 w-10 " />
+          <img src={addfileicon} className="mr-2 h-10 w-10 " alt="icon" />
           <input
             type="file"
             onChange={handleUpload}
