@@ -1,39 +1,91 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import UIExperimental from "../google-drive/UIExperimental";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router";
-import { Button } from "react-bootstrap";
 import { Form, FormControl, FormLabel } from "react-bootstrap";
 import FormItem from "antd/es/form/FormItem";
-import { doc, getFirestore, collection, Firestore } from "firebase/firestore";
+import {
+  doc,
+  getFirestore,
+  collection,
+  Firestore,
+  where,
+  query,
+} from "firebase/firestore";
 import { database, firestore } from "../../firebase";
 import { updateDoc } from "firebase/firestore";
 import UpdateProfileDrawer from "../google-drive/UpdateProfileDrawer";
-
+import { Card, Button } from "antd";
+import { getDocs } from "firebase/firestore";
+import { getDoc, onSnapshot } from "firebase/firestore";
+export interface userFields {
+  userz: {
+    url: string;
+    name: string;
+    type: string;
+    id: any;
+  };
+}
 export default function Profile() {
   const [error, setError] = useState("");
   const { logout } = useAuth();
-  const { currentUser } = useAuth();
+  const { signup, currentUser } = useAuth();
+
   const navigate = useNavigate();
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [age, setAge] = useState("");
-  const [gender, setGender] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [user, setUser] = useState(null);
+  const [userData, setUserData] = useState(null);
 
-  function handlesubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    return updateDoc(doc(firestore, "users", currentUser.uid), {
-      firstName: firstName,
-      lastName: lastName,
-      gender: gender,
-      age: age,
-      phoneNumber: phoneNumber,
-    });
+  //Working without onsnapshot
+
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     const userDocRef = doc(firestore, "users", currentUser.uid);
+  //     const userDocSnapshot = await getDoc(userDocRef);
+
+  //     if (userDocSnapshot.exists()) {
+  //       const userData = userDocSnapshot.data();
+  //       setUserData(userData);
+  //     } else {
+  //       console.log("User document not found!");
+  //     }
+  //   };
+
+  //   if (currentUser) {
+  //     fetchUserData();
+  //   }
+  // }, [currentUser]);
+  useEffect(() => {
+    let unsubscribe;
+
+    const fetchUserData = async () => {
+      const userDocRef = doc(firestore, "users", currentUser.uid);
+      unsubscribe = onSnapshot(userDocRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const userData = snapshot.data();
+          setUserData(userData);
+        } else {
+          console.log("User document not found!");
+        }
+      });
+    };
+    if (currentUser) {
+      fetchUserData();
+    }
+
+    // Cleanup function
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
+  }, [currentUser]);
+  if (!userData) {
+    return <div>Loading...</div>;
   }
 
-  //Log Out Function
+  //
+
   async function handleLogout(): Promise<void> {
     setError("");
 
@@ -47,7 +99,32 @@ export default function Profile() {
 
   return (
     <>
-      <UpdateProfileDrawer />
+      <div className="flex justify-around ">
+        <div>
+          <Card
+            hoverable
+            title={userData.firstName + " " + userData.lastName}
+            bordered={false}
+            style={{ width: 300 }}
+          >
+            <div>
+              <p>First Name: {userData.firstName}</p>
+              <p>Last Name: {userData.lastName}</p>
+              <p>Email: {currentUser.email}</p>
+              <p>Age: {userData.age}</p>
+              <p>Gender: {userData.gender}</p>
+              <p>Phone Number: {userData.phoneNumber}</p>
+            </div>
+          </Card>
+          <br />
+          <div>
+            <UpdateProfileDrawer />
+            <Button className="hover:bg-sky-100 ml-5" onClick={handleLogout}>
+              Log Out
+            </Button>
+          </div>
+        </div>
+      </div>
     </>
   );
 }

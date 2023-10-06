@@ -1,19 +1,29 @@
 import { useState, useRef, useEffect, createRef } from "react";
 import logoFile from "../../assets/File3.png";
 import { useNavigate } from "react-router";
+import {
+  FileTextOutlined,
+  PictureOutlined,
+  SoundOutlined,
+  VideoCameraOutlined,
+  DeleteOutlined,
+  FileOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import { useAuth } from "../../contexts/AuthContext";
 import { Button } from "antd";
 
 type Props = {
   class: string;
 };
+
 // Profile Dropdown
 const ProfileDropDown = (props: Props) => {
   const [state, setState] = useState(false);
   const profileRef = useRef<HTMLElement | null>(null);
   const buttonRef = useRef<HTMLButtonElement>();
   const [error, setError] = useState("");
-  const { logout } = useAuth();
+  const { logout, currentUser } = useAuth();
   const navigate = useNavigate();
 
   async function handleLogout(): Promise<void> {
@@ -49,14 +59,12 @@ const ProfileDropDown = (props: Props) => {
             className="w-10 h-10 outline-none rounded-full ring-offset-2 ring-gray-200 ring-2 lg:focus:ring-indigo-600"
             onClick={() => setState(!state)}
           >
-            <img
-              src="https://randomuser.me/api/portraits/men/46.jpg"
-              className="w-full h-full rounded-full"
-            />
+            <UserOutlined />
           </button>
           <div className="lg:hidden">
-            <span className="block">Micheal John</span>
-            <span className="block text-sm text-gray-500">john@gmail.com</span>
+            <span className="block text-sm text-gray-500">
+              {currentUser.email}
+            </span>
           </div>
         </div>
         <ul

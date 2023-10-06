@@ -1,7 +1,7 @@
 import React from "react";
 import Moment from "react-moment";
 import moment from "moment";
-
+import { useAuth } from "../../contexts/AuthContext";
 import {
   Query,
   collection,
@@ -14,6 +14,8 @@ import {
   PictureOutlined,
   SoundOutlined,
   VideoCameraOutlined,
+  DeleteOutlined,
+  FileOutlined,
 } from "@ant-design/icons";
 import { Col, Row, Statistic } from "antd";
 import { query } from "firebase/firestore";
@@ -69,6 +71,10 @@ export function Dashboard() {
   const [videoCount, setVideoCount] = useState(0);
   const [documentCount, setDocumentCount] = useState(0);
   const [audioCount, setAudioCount] = useState(0);
+  const [trashCount, setTrashCount] = useState(0);
+  const [favCount, setFavCount] = useState(0);
+
+  const { signup, currentUser } = useAuth();
 
   const [data, setData] = useState({
     labels: [
@@ -120,6 +126,7 @@ export function Dashboard() {
     );
     return onSnapshot(ImageQueryRef, (snapshot) => {
       setImageCount(snapshot.size);
+      console.log(currentUser, "this is it");
     });
   };
 
@@ -135,8 +142,7 @@ export function Dashboard() {
       }
     };
   }, []);
-
-  //Image Count
+  //Chart Data
   const getStatData = async () => {
     const ImageQueryRef = query(collection(firestore, "files"));
     return onSnapshot(ImageQueryRef, (snapshot) => {
@@ -323,11 +329,112 @@ export function Dashboard() {
       }
     };
   }, []);
+  //Trash Count
+  const getTrashCount = async () => {
+    const TrashQueryRef = query(
+      collection(firestore, "files"),
+      where("isTrash", "==", true)
+    );
+    return onSnapshot(TrashQueryRef, (snapshot) => {
+      setTrashCount(snapshot.size);
+    });
+  };
+
+  useEffect(() => {
+    let unsubscribe: any;
+    const fetchDataAndSetState = async () => {
+      unsubscribe = await getTrashCount();
+    };
+    fetchDataAndSetState();
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
+  }, []);
+  //Fav Count
+  const getFavCount = async () => {
+    const FavQueryRef = query(
+      collection(firestore, "files"),
+      where("isFavorite", "==", true)
+    );
+    return onSnapshot(FavQueryRef, (snapshot) => {
+      setFavCount(snapshot.size);
+    });
+  };
+
+  useEffect(() => {
+    let unsubscribe: any;
+    const fetchDataAndSetState = async () => {
+      unsubscribe = await getFavCount();
+    };
+    fetchDataAndSetState();
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
+  }, []);
+
   return (
     <>
-      <Line options={options} data={data} width={10} height={10} />
+      <div className="bg-white ">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <dl className="grid grid-cols-1  gap-y-16 text-center lg:grid-cols-4">
+            <div className="mx-auto flex max-w-xs flex-col gap-y-4">
+              <dt className="text-base leading-7 text-gray-600">Images</dt>
+              <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-3xl">
+                {imageCount} <PictureOutlined />
+              </dd>
+            </div>
+            <div className="mx-auto flex max-w-xs flex-col gap-y-4">
+              <dt className="text-base leading-7 text-gray-600">Videos</dt>
+              <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-3xl">
+                {videoCount} <VideoCameraOutlined />
+              </dd>
+            </div>
+            <div className="mx-auto flex max-w-xs flex-col gap-y-4">
+              <dt className="text-base leading-7 text-gray-600">Documents</dt>
+              <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-3xl">
+                {documentCount} <FileTextOutlined />
+              </dd>
+            </div>
+            <div className="mx-auto flex max-w-xs flex-col gap-y-4">
+              <dt className="text-base leading-7 text-gray-600">Audios</dt>
+              <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-3xl">
+                {audioCount} <SoundOutlined />
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+      <div className="bg-white ">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <dl className="grid grid-cols-1  gap-y-16 text-center lg:grid-cols-4">
+            <div className="mx-auto flex max-w-xs flex-col gap-y-4">
+              <dt className="text-base leading-7 text-gray-600">
+                Favorite Files
+              </dt>
+              <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-3xl">
+                {favCount} <FileOutlined />
+              </dd>
+            </div>
+            <div className="mx-auto flex max-w-xs flex-col gap-y-4">
+              <dt className="text-base leading-7 text-gray-600">
+                Trashed Files
+              </dt>
+              <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-3xl">
+                {trashCount} <DeleteOutlined />
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+      <div className="h-[500px] ">
+        <Line options={options} data={data} width={10} height={5} />
+      </div>
       <>
-        <div className="grid grid-rows-2 hover:gap-6 md:justify-between">
+        {/* <div className="grid grid-rows-2 hover:gap-6 md:justify-between">
           <Row gutter={16}>
             <Col span={12}>
               <Statistic
@@ -360,7 +467,7 @@ export function Dashboard() {
               />
             </Col>
           </Row>
-        </div>
+        </div> */}
       </>
     </>
   );

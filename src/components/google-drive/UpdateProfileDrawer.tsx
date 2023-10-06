@@ -50,9 +50,6 @@ export default function UpdateProfileDrawer() {
 
   return (
     <>
-      {/* <Button  className='h-8 w-8' onClick={showDrawer} icon={<PlusOutlined />}>
-        Profile
-      </Button> */}
       <Drawer
         title="Update you Account"
         width={500}
@@ -160,6 +157,9 @@ export default function UpdateProfileDrawer() {
           </Row>
         </Form>
       </Drawer>
+      <Button onClick={showDrawer} icon={<PlusOutlined />}>
+        Edit Profile
+      </Button>
     </>
   );
 }

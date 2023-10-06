@@ -80,8 +80,7 @@ export default function File({ file }: FileProps): JSX.Element {
   return (
     <>
       <div className="flex flex-col">
-        {truncatedName}
-        {renderFileComponent()}
+        {truncatedName} {renderFileComponent()}{" "}
         <OptionsMenu onOptionSelected={handleOptionSelected} />
       </div>
     </>

@@ -45,7 +45,6 @@ const items: MenuItem[] = [
   getItem("Trash", "trash", <DeleteOutlined />),
   getItem("Folders", "folder/root", <FolderOutlined />),
   getItem("Profile", "profile", <UserOutlined />),
-  getItem("Logout", "logout", <LogoutOutlined />),
 ];
 // const FoldersComponent = () => <div><Folders/></div>;
 const Library = () => <div>Lib Content</div>;
