@@ -105,7 +105,7 @@ export default () => {
       <nav className="bg-white border-b">
         <div className="flex items-center space-x-8 py-0 px-0 max-w-screen-xl mx-auto ">
           <div className="flex-none lg:flex-initial">
-            <a href="#">
+            <a href="/home-page">
               <img src={logoFile} width={120} height={50} alt="Float UI logo" />
             </a>
           </div>
